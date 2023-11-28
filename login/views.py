@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from login.models import Formulario
+from django.contrib import messages
 
 # Create your views here.
 #Login
@@ -59,4 +60,22 @@ def guardar(request):
 
     r = Formulario(cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
     r.save()
+    messages.success(request, 'Producto agregado')
+    return redirect('listado')
+
+def detalle(request,id):
+    registro= Formulario.objects.get(pk=id)
+    return render(request,"listadoEditar.html",{
+        'registro': registro
+    })
+
+def editar(request):
+    cliente= request.POST["cliente"]
+    rut= request.POST["rut"]
+    direccion= request.POST["direccion"]
+    fono= request.POST["fono"]
+    descripcion= request.POST["descripcion"]
+    id= request.POST["id"]
+    Formulario.objects.filter(pk=id).update(id=id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
+    messages.success(request, 'Producto actualizado')
     return redirect('listado')

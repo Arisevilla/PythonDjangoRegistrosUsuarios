@@ -25,5 +25,7 @@ urlpatterns = [
     path('home/',views.home, name='home'),
     path('listado/',views.listado, name='listado'),
     path('home/guardar',views.guardar, name='guardar'),
-    path('salir/',views.salir, name='salir')
+    path('listado/detalle/<int:id>', views.detalle, name='detalle'),
+    path('salir/',views.salir, name='salir'),
+    path('listado/editar',views.editar, name='editar'),
 ]
