@@ -139,7 +139,7 @@
             <i class="fa fa-edit"></i>
         </button>
     </form>
-</td>
+    </td>
 
     <td>
       <form action="{% url 'eliminar' registro.id %}" method="post">
@@ -147,10 +147,19 @@
         <button class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este producto?')">
           <i class="fa fa-trash"></i>
         </button>
-
       </form>
     </td>
 </tr>
+  {% if messages %}
+  <ul class="messages">
+  {% for message in messages %}
+    <li {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</li>
+  {% endfor %}
+  </ul>
+{% endif %}
+
     {% endfor %}
+
 </table>
+
 </body>
