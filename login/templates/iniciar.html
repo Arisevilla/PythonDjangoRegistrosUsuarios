@@ -4,25 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!--{% load static %}-->
+    <!--<link rel="stylesheet" type="text/css" href="{%static 'styles.css' %}">-->
+
+    <style type="text/css">
+
+body{
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    font-family:"Poppins",sans-serif;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color:#fff;
+    }
+
+.container-login{
+    width: 350px;
+    height: 450%;
+    background-color:#fff;
+    color:black;
+
     
-    <h1 class="text-center">Login </h1>
-    <form action="" method="post" class="w-50 shadow mx-auto p-4 m-3">
+}
+
+.title-login{
+    font-size: 36px;
+    text-align: center;
+    font-size: 20px;
+
+}
+
+.container-login .input-box{
+    position:relative;
+    width:100%;
+    height: 50px;
+    margin:20px 0;
+    padding-right: 1rem;
+
+}
+
+.input-box input{
+    width:100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border:2px solid rgba(44,31,240,2);
+    border-radius: 20px;
+    font-size:16px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+
+}
+
+.input-box i {
+    position:absolute;
+    right:40px;
+    top:20%;
+    transform: translate(-50%);
+    font-size:20px;
+}
+
+.title-form{
+    padding-left: 1rem;
+    margin: 1rem;
+    padding-right: 1rem;
+}
+.boton-link{
+    display:inline-block;
+    padding :10px 20px;
+    font-size: 16px;
+    text-decoration:none;
+    border:none;
+    border-radius: 5px;
+    background-color: blue;
+    color: #fff;
+    text-align: center;
+    display: block;
+    margin:auto;
+    margin-top:20px;
+    
+}
+
+.form-login{
+    padding-right: 1rem;
+}
+.submit-login{
+    padding-left: 2rem;
+
+}
+.error-inicio{
+    text-align: center;
+}
+
+.link-registro{
+    text-align: center;
+    margin-top:20px;
+    margin-left:30px;
+}
+
+.boton-registro{
+    display:inline-block;
+    padding: 5px 10px 5px 5px;
+    font-size: 16px;
+    text-decoration: none;
+    border-radius: 0.1rem;
+    
+}
+
+
+
+    </style>
+</head>
+
+
+
+
+<body>
+    <div class="container-login">
+    <h1 class="title-login">Login </h1>
+    <form action="" method="post" class="form-login">
+        
         {% csrf_token %}
-        Usuario: <input type="text" name="username" class="form-control"> <br>
-        Contraseña: <input type="password" name="password" class="form-control"> <br>
-        <input type="submit" value="Ingresar"> <br>
-        <a href="registro/">Registrarse</a>
+        <div class="input-box">
+        <div class="title-form"> <input type="text" name="username" placeholder="Username"></div>
+        <i class='bx bxs-user'></i>
+        </div>
+        <div class="input-box">
+        <div class="title-form"> <input type="password" name="password" placeholder="Password"></div>
+        <i class='bx bxs-lock-alt'></i>
+        </div>
+
+        <div class="container-links">
+        <div class="submit-login">
+        <input type="submit" value="Ingresar" class="boton-link">
+        </div>
+        <div class="link-registro">
+        <a href="registro/" class="boton-registro">¿No tienes cuenta?</a>
+        </div>
+        </div>
     </form>
     
 
     {% if error %}
-    <h3>{{error}}</h3>
+    <h3 class="error-inicio">{{error}}</h3>
     {% endif %}
+    </div>
 
     
     

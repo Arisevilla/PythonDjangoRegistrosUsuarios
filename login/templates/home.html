@@ -7,26 +7,112 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style type="text/css">
+      
+      body{
+        font-family:Arial, Helvetica, sans-serif;
+        margin:0;
+        
+      }
+
+      .container-home{
+        display: flex;
+        min-height: 100vh;
+        margin:0;
+        font-family:Arial;
+        gap: 30px;
+      }
+    
+      .navbar {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 200px;
+        background-color: #1e1e1e;
+        padding:20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-top-right-radius: 5px;
+        
+      }
+
+      .navbar ul{
+        margin:0;
+        padding: 0;
+        list-style: none;
+        
+      }
+
+      .navbar ul li{
+        border-bottom:1px solid #1e1e1e;
+        display: flex;
+        align-items: center;
+        margin-top:10px;
+      }
+      .navbar i{
+        margin-right: 10px;
+        color: #fff;
+      }
+
+      .navbar ul a{
+        box-sizing: border-box;
+        color:white;
+        display: block;
+        width: 100%;
+        padding: 6px 10px;
+        margin: 5px 0;
+        text-decoration: none;
+
+      }
+
+
+      .navbar a{
+        color: white;
+        text-align: left;
+        padding: 12px;
+        text-decoration:none;
+      }
+
+      .title-navbar {
+        display: flex;
+        align-items: center;
+        margin-bottom:20px;
+      }
+      .title-navbar i{
+        margin-right: 10px;
+        color:#fff;
+        font-size: 30px;
+      }
+
+      .title-navbar h4{
+        color:#fff;
+        margin:0;
+      }
+  
+    </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'iniciar' %}">Inicio</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Formulario</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'listado' %}">Registros</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+  <div class="container-home">
+
+  
+   <div class="navbar">
+    <div class="title-navbar">
+      <i class='bx bxl-magento'></i> <h4>Magento</h4>
+    </div>
+    <ul>
+      <li>
+        <i class='bx bx-home-alt-2'></i><a href="{% url 'iniciar' %}">Inicio</a>
+      </li>
+      <li>
+        <i class='bx bxs-report'></i><a href="{% url 'home' %}">Formulario</a>
+      </li>
+      <li>
+        <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Registros</a>
+      </li>
+    </ul>
+   </div>
 
       {%block content %}
       <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="guardar">
@@ -45,6 +131,7 @@
         <a href="../salir/">Logout</a>
 
       </form>
+    </div>
 
 
       {% endblock %}
