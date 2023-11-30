@@ -35,8 +35,9 @@ def registro(request):
         else:
             
             name= request.POST["username"]
+            email= request.POST["email"]
             password = request.POST["password1"]
-            user = User.objects.create_user(username=name,password=password)
+            user = User.objects.create_user(username=name,email=email,password=password)
             user.save()
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Usuario registrado"})
 
