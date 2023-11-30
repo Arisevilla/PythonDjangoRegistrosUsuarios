@@ -28,4 +28,5 @@ urlpatterns = [
     path('listado/detalle/<int:id>', views.detalle, name='detalle'),
     path('salir/',views.salir, name='salir'),
     path('listado/editar',views.editar, name='editar'),
+    path('listado/eliminar/<int:id>',views.eliminar,name='eliminar'),
 ]

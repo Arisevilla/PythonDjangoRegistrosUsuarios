@@ -140,6 +140,16 @@
         </button>
     </form>
 </td>
+
+    <td>
+      <form action="{% url 'eliminar' registro.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este producto?')">
+          <i class="fa fa-trash"></i>
+        </button>
+
+      </form>
+    </td>
 </tr>
     {% endfor %}
 </table>

@@ -64,7 +64,7 @@ def guardar(request):
     fono= request.POST["fono"]
     descripcion= request.POST["descripcion"]
     
-    if len(fono) !=8:
+    if len(fono) !=9:
         messages.error(request,'El teléfono debe tener 8 dígitos')
         return redirect('home')
 
@@ -83,6 +83,7 @@ def guardar(request):
     if not validar_rut(rut):
             messages.error(request,'El rut es inválido')
             return redirect('home')
+
     else:
         r = Formulario(cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
         r.save()
@@ -104,4 +105,10 @@ def editar(request):
     id= request.POST["id"]
     Formulario.objects.filter(pk=id).update(id=id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
     messages.success(request, 'Producto actualizado')
+    return redirect('listado')
+
+def eliminar(request, id):
+    registro = Formulario.objects.filter(pk=id)
+    registro.delete()
+    messages.success(request,'Registro eliminado')
     return redirect('listado')

@@ -115,7 +115,7 @@
    </div>
 
       {%block content %}
-      <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="guardar">
+      <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="{% url 'guardar' %}">
         {% csrf_token %}
         Cliente: <input type="text" name="cliente" class="form-control" required>
         Rut: <input type="text" name="rut" class="form-control" required>
@@ -129,12 +129,21 @@
 
 
         <a href="../salir/">Logout</a>
-
+        
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
       </form>
+    
+      {% endblock %}
     </div>
 
 
-      {% endblock %}
+      
 
 
 
