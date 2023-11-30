@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <style type="text/css">
       
       body{
@@ -88,6 +87,55 @@
         color:#fff;
         margin:0;
       }
+
+      .table-container{
+        margin-top: 20px;
+        overflow-x:auto;
+      }
+
+      .table{
+       display:flex;
+       flex-direction:column;
+       width: 100%;
+       border-collapse:collapse;
+      }
+
+      .table th,
+      .table td{
+        border:1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+
+      .table .actions{
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .table tr.table-dark{
+        background-color: #343a40;
+        color:white;
+      }
+
+      .table button{
+        border:none;
+        cursor:pointer;
+        padding:5px;
+      }
+
+      .table button.btn-warning{
+        color:#fff;
+        background-color: #ffc107;
+        border-radius: 3px;
+      }
+
+      .table button.btn-danger{
+        color:#fff;
+        background-color: #dc3545;
+        border-radius:3px;
+      }
+
+
   
     </style>
 </head>
@@ -122,8 +170,10 @@
         <th>Dirección</th>
         <th>Fono</th>
         <th>Descripción</th>
+        <th>Acciones</th>
     </tr>
 {% for registro in registros %}
+<div class="table-row">
     <tr>
       <td>{{registro.id}}</td>
     <td>{{registro.cliente}}</td>
@@ -132,25 +182,24 @@
     <td>{{registro.direccion}}</td>
     <td>{{registro.fono}}</td>
     <td>{{registro.descripcion}}</td>
-    <td>
+    <td class="actions">
     <form action="{% url 'detalle' registro.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-warning">
             <i class="fa fa-edit"></i>
         </button>
     </form>
-    </td>
-
-    <td>
-      <form action="{% url 'eliminar' registro.id %}" method="post">
-        {% csrf_token %}
-        <button class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este producto?')">
-          <i class="fa fa-trash"></i>
-        </button>
-      </form>
-    </td>
+    <form action="{% url 'eliminar' registro.id %}" method="post">
+      {% csrf_token %}
+      <button class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este producto?')">
+        <i class="fa fa-trash"></i>
+      </button>
+    </form>
+  </td>
 </tr>
+</div>
     {% endfor %}
+  
 </table>
 
   {% if messages %}

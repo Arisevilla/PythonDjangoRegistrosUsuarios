@@ -4,26 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style type="text/css">
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container-registro{
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .title-registro{
+            text-align: center;
+            color: #31303D;
+            margin-bottom:20px;
+        }
+
+        .registro-group {
+            margin-bottom:15px;
+        }
+
+        .registro-group input{
+            width: 100%;
+            padding:8px;
+            border:1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            
+        }
+
+        .botones{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .boton-registrarse input{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color:blue;
+            color:#fff;
+            cursor:pointer;
+        }
+
+        .link-login a{
+            color:#007bff;
+            text-decoration: none;
+        }
+
+        .error-message{
+            color: #dc3545;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+
+
+
+    </style>
+
 </head>
 <body>
+<div class="container-registro">
+
+    <div class="title-registro">
     <h2 class="text-center">Registro de Usuarios</h2>
+    </div>
+
     <form action="" method="post" class="w-50 shadow mx-auto p-4 m-3">
         {% csrf_token %}
-        Usuario: <input type="text" name="username" class="form-control"> <br>
-        Correo Electrónico: <input type="email" name="email" class="form-control"> <br>
-        Contraseña: <input type="password" name="password1" class="form-control" > <br>
-        Confirmar Contraseña: <input type="password" name="password2"  class="form-control"> <br>
+        <div class="registro-group">
+        Usuario: <input type="text" name="username" > <br>
+        </div>
 
+        <div class="registro-group">
+        Correo Electrónico: <input type="email" name="email" > <br>
+        </div>
+
+        <div class="registro-group">
+        Contraseña: <input type="password" name="password1"  > <br>
+        </div>
+
+        <div class="registro-group">
+        Confirmar Contraseña: <input type="password" name="password2"  > <br>
+        </div>
+
+        <div class="botones">
+
+        <div class="boton-registrarse">
         <input type="submit" value="Registrarse"> <br>
+        </div>
         
+        <div class="link-login">
         <a href="../">Login</a>
+        </div>
+
+        </div>
         {% if error %}
-            <h3>{{ error }}</h3>
+            <h3 class="error-message">{{ error }}</h3>
         {% endif %}
     </form>
+</div>
    
 </body>
 </html>
