@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style type="text/css">
+
+    body{
+        font-family:Arial, Helvetica, sans-serif;
+        margin:0;
+        height: 100vh;
+        
+      }
+
+    .navbar {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 200px;
+        background-color: #1e1e1e;
+        padding:20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-top-right-radius: 5px;
+        
+      }
+
+      .navbar ul{
+        margin:0;
+        padding: 0;
+        list-style: none;
+        
+      }
+
+      .navbar ul li{
+        border-bottom:1px solid #1e1e1e;
+        display: flex;
+        align-items: center;
+        margin-top:10px;
+      }
+      .navbar i{
+        margin-right: 10px;
+        color: #fff;
+      }
+
+      .navbar ul a{
+        box-sizing: border-box;
+        color:white;
+        display: block;
+        width: 100%;
+        padding: 6px 10px;
+        margin: 5px 0;
+        text-decoration: none;
+
+      }
+
+
+      .navbar a{
+        color: white;
+        text-align: left;
+        padding: 12px;
+        text-decoration:none;
+      }
+
+      .title-navbar {
+        display: flex;
+        align-items: center;
+        margin-bottom:20px;
+      }
+      .title-navbar i{
+        margin-right: 10px;
+        color:#fff;
+        font-size: 30px;
+      }
+
+      .title-navbar h4{
+        color:#fff;
+        margin:0;
+      }
+
+      .container-home{
+        display: flex;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        background-color: #fff;
+        
+      }
+
+      .dashboard{
+        flex-wrap: wrap;
+        justify-content:space-around;
+        display: flex;
+    
+      }
+
+      .dashboard-item{
+        width:300px;
+        margin:20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        background-color: #fff;
+        transition: transform 0.3s ease-in-out;
+        
+      }
+
+      .dashboard-item h2{
+        color:#333;
+        margin-bottom:10px;
+      }
+
+      .dashboard-item p {
+        color:#777;
+        margin: 0;
+      }
+
+      .dashboard-item ul{
+        list-style-type:none;
+        padding:0;
+      }
+
+      .dashboard-item ul li {
+        border-bottom: 1px solid #ddd;
+        padding:10px;
+        font-size:16px;
+        color:#333;
+      }
+
+      .dashboard-item ul li:last-child{
+        border-bottom: none;
+      }
+
+
+      </style>
+</head>
+
+
+<body>
+    <div class="container-home">
+
+  
+        <div class="navbar">
+
+         <div class="title-navbar">
+           <i class='bx bxl-magento'></i><a href="{% url 'iniciar' %}"><h4>Magento</h4></a>
+         </div>
+
+         <ul>
+           <li>
+             <i class='bx bx-home-alt-2'></i><a href="{% url 'inicio' %}">Inicio</a>
+           </li>
+           <li>
+             <i class='bx bxs-report'></i><a href="{% url 'home' %}">Nueva OT</a>
+           </li>
+           <li>
+             <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
+           </li>
+
+           {% if user.is_staff %}
+            <li>
+                <i class ='bx bx-user'></i><a href="{% url 'registro' %}">Registros de Usuarios</a>
+             </li>
+            {% endif %}
+         </ul>
+
+        </div>
+
+        <div class="dashboard">
+
+        <div class="dashboard-item">
+            <h2>Usuarios Registrados</h2>
+            <ul>
+            {% for usuario in usuarios_registrados %}
+            <li>{{usuario}}</li>
+            {% endfor %}
+            </ul>
+         </div
+
+         <div class="dashboard-item">
+            <h2>Trabajador con Más OT Este Mes</h2>
+            <p>{{ trabajador_mas_ot }}</p>
+        </div>
+
+         <div class="dashboard-item">
+            <h2>Total de Registros</h2>
+            <p>{{ total_registros_count }}</p>
+         </div>
+
+         <div class="dashboard-item">
+            <h2>Registros por Mes</h2>
+            <canvas id="regPorMesChart" width="400" height="200"></canvas>
+         </div>
+
+        </div>
+
+
+
+    </div>
+<script>
+        
+        var registrosPorMesData = {
+           labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+           datasets: [{
+              label: 'Registros por Mes',
+              data:'',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+           }]
+        };
+  
+        var regPorMesChart = new Chart(document.getElementById('regPorMesChart'), {
+           type: 'bar',
+           data: registrosPorMesData
+        });
+
+        
+
+
+</script>
+
+
+    
+</body>
+</html>

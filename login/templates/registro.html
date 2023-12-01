@@ -5,32 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     
-   
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style type="text/css">
         body{
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            
         }
 
         .container-registro{
-            max-width: 400px;
-            width: 100%;
-            margin: auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            min-height: 100vh;
+            margin:0;
+            font-family:Arial;
+            gap: 30px;
         }
 
         .title-registro{
             text-align: center;
             color: #31303D;
             margin-bottom:20px;
+        }
+
+        .title-registro h2{
+            margin:0;
         }
 
         .registro-group {
@@ -68,10 +68,87 @@
         }
 
         .error-message{
-            color: #dc3545;
+            color:blue;
             text-align: center;
             margin-top: 10px;
         }
+
+        .container-form{
+            max-width: 400px;
+            width: 100%;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+
+
+        .navbar {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 200px;
+        background-color: #1e1e1e;
+        padding:20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-top-right-radius: 5px;
+        
+      }
+
+      .navbar ul{
+        margin:0;
+        padding: 0;
+        list-style: none;
+        
+      }
+
+      .navbar ul li{
+        border-bottom:1px solid #1e1e1e;
+        display: flex;
+        align-items: center;
+        margin-top:10px;
+      }
+      .navbar i{
+        margin-right: 10px;
+        color: #fff;
+      }
+
+      .navbar ul a{
+        box-sizing: border-box;
+        color:white;
+        display: block;
+        width: 100%;
+        padding: 6px 10px;
+        margin: 5px 0;
+        text-decoration: none;
+
+      }
+
+
+      .navbar a{
+        color: white;
+        text-align: left;
+        padding: 12px;
+        text-decoration:none;
+      }
+
+      .title-navbar {
+        display: flex;
+        align-items: center;
+        margin-bottom:20px;
+      }
+      .title-navbar i{
+        margin-right: 10px;
+        color:#fff;
+        font-size: 30px;
+      }
+
+      .title-navbar h4{
+        color:#fff;
+        margin:0;
+      }
 
 
 
@@ -82,12 +159,39 @@
 <body>
 <div class="container-registro">
 
+    <div class="navbar">
+        <div class="title-navbar">
+          <i class='bx bxl-magento'></i><a href="{% url 'iniciar' %}"><h4>Magento</h4></a>
+        </div>
+        <ul>
+          <li>
+            <i class='bx bx-home-alt-2'></i><a href="{% url 'inicio' %}">Inicio</a>
+          </li>
+          <li>
+            <i class='bx bxs-report'></i><a href="{% url 'home' %}">Nueva OT</a>
+          </li>
+          <li>
+            <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
+          </li>
+        </ul>
+        </div>
+
+    <div class="container-form">
     <div class="title-registro">
     <h2 class="text-center">Registro de Usuarios</h2>
     </div>
 
     <form action="" method="post" class="w-50 shadow mx-auto p-4 m-3">
         {% csrf_token %}
+        <div class="registro-group">
+            Nombre: <input type="text" name="nombre" required> <br>
+        </div>
+
+        <div class="registro-group">
+            Apellido: <input type="text" name="apellido" required> <br>
+        </div>
+
+
         <div class="registro-group">
         Usuario: <input type="text" name="username" > <br>
         </div>
@@ -115,10 +219,14 @@
         </div>
 
         </div>
+
         {% if error %}
+        <div class="error-message">
             <h3 class="error-message">{{ error }}</h3>
         {% endif %}
+        </div>
     </form>
+</div>
 </div>
    
 </body>

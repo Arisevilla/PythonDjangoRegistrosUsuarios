@@ -137,10 +137,11 @@
 
       .empresa-orden{
         display: flex;
+        flex-direction: column;
         align-items: center;
-        text-align: center;
-        justify-content: center;
+        justify-content: space-between;
         margin-bottom:20px;
+        padding-bottom: 2rem;
       }
       .empresa-orden i{
         font-size: 30px;
@@ -157,6 +158,12 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
+        .registro-group label{
+          display: block;
+          text-align: left;
+          margin-bottom: 5px;
+        }
+
 
 
 </style>
@@ -167,17 +174,17 @@
 
   <div class="navbar">
     <div class="title-navbar">
-      <i class='bx bxl-magento'></i> <h4>Magento</h4>
+      <i class='bx bxl-magento'></i><a href="{% url 'iniciar' %}"><h4>Magento</h4></a>
     </div>
     <ul>
       <li>
         <i class='bx bx-home-alt-2'></i><a href="{% url 'iniciar' %}">Inicio</a>
       </li>
       <li>
-        <i class='bx bxs-report'></i><a href="{% url 'home' %}">Formulario</a>
+        <i class='bx bxs-report'></i><a href="{% url 'home' %}">Nueva OT</a>
       </li>
       <li>
-        <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Registros</a>
+        <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
       </li>
     </ul>
    </div>
@@ -217,7 +224,7 @@
 
         <div class="registro-group">
         <label>Descripción:</label>
-        <textarea class="form-control" name="descripcion">
+        <textarea  name="descripcion">
             {{registro.descripcion}}
         </textarea>
         </div>

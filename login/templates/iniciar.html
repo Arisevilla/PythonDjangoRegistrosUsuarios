@@ -142,6 +142,12 @@ body{
     
 }
 
+.error-message{
+    color:blue;
+    text-align: center;
+    margin-top: 10px;
+}
+
 
 
     </style>
@@ -173,16 +179,15 @@ body{
         <div class="submit-login">
         <input type="submit" value="Ingresar" class="boton-link">
         </div>
-        <div class="link-registro">
-        <a href="registro/" class="boton-registro">¿No tienes cuenta?</a>
-        </div>
         </div>
     </form>
     
 
     {% if error %}
-    <h3 class="error-inicio">{{error}}</h3>
+    <div class="error-message">
+        <h3 class="error-inicio">{{error}}</h3>
     {% endif %}
+    </div>
     </div>
 
     

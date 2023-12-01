@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Home</title>
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -160,7 +160,7 @@
       }
 
       .error-message{
-            color: #dc3545;
+            color: blue;
             text-align: center;
             margin-top: 10px;
         }
@@ -169,6 +169,13 @@
           display: block;
           text-align: left;
           margin-bottom: 5px;
+        }
+
+        .user{
+          color:#31303D;
+          font-size: 18px;
+          font-weight: bold;
+          margin-top:10px;
         }
   
     </style>
@@ -180,19 +187,28 @@
   
    <div class="navbar">
     <div class="title-navbar">
-      <i class='bx bxl-magento'></i> <h4>Magento</h4>
+      <i class='bx bxl-magento'></i><a href="{% url 'iniciar' %}"><h4>Magento</h4></a>
     </div>
     <ul>
       <li>
-        <i class='bx bx-home-alt-2'></i><a href="{% url 'iniciar' %}">Inicio</a>
+        <i class='bx bx-home-alt-2'></i><a href="{% url 'inicio' %}">Inicio</a>
       </li>
       <li>
-        <i class='bx bxs-report'></i><a href="{% url 'home' %}">Formulario</a>
+        <i class='bx bxs-report'></i><a href="{% url 'home' %}">Nueva OT</a>
       </li>
       <li>
-        <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Registros</a>
+        <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
       </li>
+      {% if user.is_staff %}
+      <li>
+        <i class ='bx bx-user'></i><a href="{% url 'registro' %}">Registros de Usuarios</a>
+      </li>
+    {% endif %}
     </ul>
+
+   
+
+
    </div>
 
       {%block content %}
@@ -204,10 +220,19 @@
           <h2>Magento</h2>
         </div>
         <h4 class="text-center">Orden de trabajo</h4>
+
+        {% if nombre and apellido %}
+          <p class="user">{{nombre}} {{apellido}}</p>
+        {% endif%}
       </div>
 
       <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
         {% csrf_token %}
+
+        <div class="registro-group">
+          <label>Nombre trabajador</label> <input type="text" name="name" required>
+        </div>
+
       <div class="registro-group">
         <label>Cliente:</label> <input type="text" name="cliente"  required>
       </div>
@@ -246,7 +271,7 @@
         {% if messages %}
         <div class="error-message">
           {% for message in messages %}
-            <h6 {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</h6>
+            <h3 {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</h3>
         {% endfor %}
         </div>
         {% endif %}
