@@ -14,6 +14,10 @@ from django.db.models import Max, F
 from django.db.models.functions import TruncMonth
 from django.db.models import Min
 import json
+import uuid
+from django.db import transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 
@@ -56,11 +60,20 @@ def registro(request):
             user.save()
             user_profile.save()
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Usuario registrado"})
+        
+class AtomicCounter:
+    counter = 1000
 
+    @classmethod
+    def increment_and_get(cls):
+        with transaction.atomic():
+            cls.counter += 1
+            return cls.counter
 @login_required
 def home(request):
     nombre= None
     apellido = None
+    nuevo_id =  AtomicCounter.increment_and_get()
 
     if request.user.is_authenticated:
         try:
@@ -75,12 +88,12 @@ def home(request):
         usuario_encontrado = Formulario.objects.filter(rut=rut).first()
 
         if usuario_encontrado:
-            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido,'usuario':usuario_encontrado})
+            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido,'usuario':usuario_encontrado,'nuevo_id': nuevo_id})
         else:
             messages.info(request,'El rut no está registrado.')
-            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido, })
+            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido,'nuevo_id': nuevo_id })
 
-    return render(request,"home.html", {'nombre': nombre, 'apellido':apellido})
+    return render(request,"home.html", {'nombre': nombre, 'apellido':apellido,'nuevo_id': nuevo_id})
 
 #Desloguearse
 def salir(request):
@@ -112,6 +125,16 @@ def listado(request):
         )
     else:
         registros= Formulario.objects.all()
+
+    paginator = Paginator(registros, 10)
+    page = request.GET.get('page')
+
+    try:
+        registros = paginator.page(page)
+    except PageNotAnInteger:
+        registros = paginator.page(1)
+    except EmptyPage:
+        registros = paginator.page(paginator.num_pages)
                                                   
     return render(request,"listado.html", {
         'registros': registros,
@@ -157,7 +180,8 @@ def guardar(request):
     rut_valido= validar_rut(rut)
     
     if rut_valido:
-            r = Formulario( cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user)
+            formulario_id =  AtomicCounter.increment_and_get()
+            r = Formulario( id=formulario_id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user)
             r.save()
             messages.success(request, 'Registro agregado')
             return redirect('listado')
