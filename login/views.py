@@ -116,6 +116,8 @@ def listado(request):
 
     campo = request.GET.get('campo','id')
     valor = request.GET.get('valor','')
+    orden = request.GET.get('orden', 'id')
+    direccion = request.GET.get('direccion','asc')
 
     campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono']
 
@@ -126,6 +128,11 @@ def listado(request):
     else:
         registros= Formulario.objects.all()
 
+    if direccion== 'asc':
+        registros= registros.order_by(orden)
+    else:
+        registros = registros.order_by(f'-{orden}')
+
     paginator = Paginator(registros, 10)
     page = request.GET.get('page')
 
@@ -135,6 +142,12 @@ def listado(request):
         registros = paginator.page(1)
     except EmptyPage:
         registros = paginator.page(paginator.num_pages)
+
+    if direccion == 'asc':
+        url_ordenacion = f'?campo={campo}&valor={valor}&orden={orden}&direccion=desc'
+    else:
+        url_ordenacion = f'?campo={campo}&valor={valor}&orden={orden}&direccion=asc'
+
                                                   
     return render(request,"listado.html", {
         'registros': registros,
@@ -142,6 +155,9 @@ def listado(request):
         'apellido':apellido,
         'campo':campo,
         'valor':valor,
+        'orden':orden,
+        'direccion':direccion,
+        'url_ordenacion': url_ordenacion,
     })
 
 
