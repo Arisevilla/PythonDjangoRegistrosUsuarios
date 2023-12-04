@@ -10,6 +10,10 @@ from django.db.models import Q
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Count
 from datetime import datetime
+from django.db.models import Max, F
+from django.db.models.functions import TruncMonth
+from django.db.models import Min
+import json
 
 
 
@@ -28,7 +32,7 @@ def iniciar(request):
             return render(request,"iniciar.html", {'form':AuthenticationForm, 'error':"Usuario y/o Password incorrecto"})
         else:
             login(request,user)
-            return redirect("home/")
+            return redirect("inicio/")
 
     
 #Registrarse
@@ -63,9 +67,19 @@ def home(request):
             user_profile= UserProfile.objects.get(user=request.user)
             nombre= user_profile.nombre
             apellido = user_profile.apellido
-
         except UserProfile.DoesNotExist:
             pass
+
+    if request.method == 'POST':
+        rut= request.POST.get('rut', '')
+        usuario_encontrado = Formulario.objects.filter(rut=rut).first()
+
+        if usuario_encontrado:
+            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido,'usuario':usuario_encontrado})
+        else:
+            messages.info(request,'El rut no está registrado.')
+            return render(request, 'home.html', {'nombre': nombre, 'apellido':apellido, })
+
     return render(request,"home.html", {'nombre': nombre, 'apellido':apellido})
 
 #Desloguearse
@@ -115,7 +129,7 @@ def guardar(request):
     direccion= request.POST["direccion"]
     fono= request.POST["fono"]
     descripcion= request.POST["descripcion"]
-    name = request.POST["name"]
+    contacto= request.POST["contacto"]
 
     if len(fono) !=9:
         messages.error(request,'El teléfono debe tener 9 dígitos')
@@ -143,7 +157,7 @@ def guardar(request):
     rut_valido= validar_rut(rut)
     
     if rut_valido:
-            r = Formulario(name=name, cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
+            r = Formulario( cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user)
             r.save()
             messages.success(request, 'Registro agregado')
             return redirect('listado')
@@ -180,24 +194,49 @@ def inicio(request):
 
     usuarios_registrados= User.objects.all().values_list('username', flat=True)
 
-    registros_por_mes= Formulario.objects.filter(
-        fecha__gte=datetime(today.year,1,1).date()
-    ).annotate(month=Count('fecha')).values('month')
 
-    trabajador_mas_ot= Formulario.trabajador_con_mas_ot_mes()
+
+    trabajador_con_mas_registros = Formulario.objects.filter(
+        user__isnull=False
+    ).values('user__username').annotate(
+        registros=Count('id')
+    ).order_by('-registros').first()
+
+
+    registros_mes= Formulario.objects.annotate(
+        month=TruncMonth('fecha')
+    ).values('user__username').annotate(
+        registros=Count('id')
+    ).filter(
+        month=datetime(today.year, today.month, 1).date(),
+        user__isnull=False
+    ).order_by('-registros').first()
+
+    #Usuario con menos registros.
+    registros_menos_por_mes = Formulario.objects.annotate(
+        month=TruncMonth('fecha')
+    ).values('user__username').annotate(
+        registros=Count('id')
+    ).filter(
+        month=datetime(today.year, today.month,1).date(),
+        user__isnull=False
+    ).order_by('registros').first()
+
+    nombre_mes_actual = today.strftime("%B")
+
+
+    labels= [nombre_mes_actual]
+    data = [registros_mes['registros'] if registros_mes else 0 ]
 
     
-
-    labels= [today.strftime("%b")]
-    data = [registros_por_mes[0]['month'] if registros_por_mes else 0 ]
-
 
     return render(request, 'inicio.html',{
         'usuarios_registrados':usuarios_registrados,
         'usuarios_registrados_count': User.objects.count(),
         'total_registros_count': Formulario.objects.count(),
         'labels':labels,
-        'data':data,
-        'registros_por_mes': registros_por_mes,
-        'trabajador_mas_ot':trabajador_mas_ot,
+        'data':json.dumps(data),
+        'registros_mes': registros_mes,
+        'trabajador_con_mas_registros': trabajador_con_mas_registros,
+        'registros_menos_por_mes':registros_menos_por_mes,
     })

@@ -23,6 +23,7 @@
         margin:0;
         font-family:Arial;
         gap: 30px;
+      
       }
 
       .title-registro{
@@ -74,7 +75,30 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
+
+        .container-busqueda{
+        width: 100%; 
+        margin-bottom: 20px;
+        }
+
+        .boton-buscar input{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color:blue;
+            color:#fff;
+            cursor:pointer;
+        }
+      .boton-buscar input[type="submit"] {
+      padding: 8px 12px; 
+      font-size: 12px; 
+      width: 70px;
+    }
+
+       
 
 
       
@@ -211,34 +235,110 @@
 
    </div>
 
-      {%block content %}
+  <div class="container-busqueda">
+   {%block content %}
+   <div class="container-form">
+   <form method="post" action="{% url 'home' %}">
+    {% csrf_token %}
+    <div class="registro-group">
       
-      <div class="container-form">
-      <div class="title-registro">
-        <div class="empresa-orden">
-          <i class='bx bxl-magento'></i> 
-          <h2>Magento</h2>
-        </div>
-        <h4 class="text-center">Orden de trabajo</h4>
+      <label>Buscar por RUT:</label>
+      <input type="text" name="rut" required>
+    </div>
+    <div class="boton-buscar">
+    <input type="submit" value="Buscar">
+  </div>
+  </form>
+</div>
 
-        {% if nombre and apellido %}
-          <p class="user">{{nombre}} {{apellido}}</p>
-        {% endif%}
+   <div class="container-form">
+    
+    <div class="title-registro">
+      <div class="empresa-orden">
+        <i class='bx bxl-magento'></i> 
+        <h2>Magento</h2>
+      </div>
+      <h4 class="text-center">Orden de trabajo</h4>
+
+      {% if nombre and apellido %}
+        <p class="user">{{nombre}} {{apellido}}</p>
+      {% endif%}
+    </div>
+
+   
+
+   {% if usuario %}
+      <div class="usuario-encontrado">
+        <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
+          {% csrf_token %}
+
+          <div class="registro-group">
+            <label>Rut:</label> <input type="text" name="rut"  value="{{usuario.rut}}">
+          </div>
+      
+        <div class="registro-group">
+          <label>Cliente:</label> <input type="text" name="cliente"  value="{{usuario.cliente}}">
+        </div>
+  
+        <div class="registro-group">
+          <label>Dirección:</label> <input type="text" name="direccion"  value="{{usuario.direccion}}">
+        </div>
+  
+        <div class="registro-group">
+          <label>Fono:</label> <input type="number" name="fono"  value="{{usuario.fono}}">
+        </div>
+  
+        <div class="registro-group">
+          <label>Contacto:</label> <input type="text" name="contacto" value="{{usuario.contacto}}">
+        </div>
+  
+        <div class="registro-group">
+          <label>Descripción:</label>
+          <textarea  name="descripcion">
+            {{usuario.descripcion}}
+  
+          </textarea>
+        </div>
+  
+        <div class="botones">
+  
+        <div class="boton-guardar">
+          <input type="submit" value="Guardar" > <br>
+        </div>
+  
+        <div class="link-login">  
+          <a href="../salir/">Logout</a>
+        </div>
+  
+        </div>
+  
+      </form>
+      </div>
       </div>
 
+      
+      {%else%}
+
+      
+      
+      
+
+      
+
+
+       
+
+
+      
       <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
         {% csrf_token %}
 
         <div class="registro-group">
-          <label>Nombre trabajador</label> <input type="text" name="name" required>
+          <label>Rut:</label> <input type="text" name="rut"  required>
         </div>
-
+    
       <div class="registro-group">
         <label>Cliente:</label> <input type="text" name="cliente"  required>
-      </div>
-
-      <div class="registro-group">
-        <label>Rut:</label> <input type="text" name="rut"  required>
       </div>
 
       <div class="registro-group">
@@ -247,6 +347,10 @@
 
       <div class="registro-group">
         <label>Fono:</label> <input type="number" name="fono"  required>
+      </div>
+
+      <div class="registro-group">
+        <label>Contacto:</label> <input type="text" name="contacto" required>
       </div>
 
       <div class="registro-group">
@@ -267,19 +371,28 @@
       </div>
 
       </div>
-        
-        {% if messages %}
+      {% if messages %}
         <div class="error-message">
           {% for message in messages %}
             <h3 {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</h3>
         {% endfor %}
         </div>
         {% endif %}
-      </form>
+
+    </form>
+    </div>
+
+    {% endif %}
+  </div>
+      
+
+
+        
+  
     
       {% endblock %}
     </div>
-    </div>
+   
 
 
       

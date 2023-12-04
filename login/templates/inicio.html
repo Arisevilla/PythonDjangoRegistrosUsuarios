@@ -93,13 +93,14 @@
 
       .dashboard{
         flex-wrap: wrap;
-        justify-content:space-around;
+        justify-content:space-evenly
         display: flex;
+        
     
       }
 
       .dashboard-item{
-        width:300px;
+        flex:0 0 calc(33.33% -40px);
         margin:20px;
         padding: 20px;
         border-radius: 10px;
@@ -172,24 +173,38 @@
 
         <div class="dashboard">
 
-        <div class="dashboard-item">
+        
+
+         <div class="dashboard-item">
+            <h2>Total de Registros</h2>
+            <p>{{ total_registros_count }}</p>
+         </div>
+
+         <div class="dashboard-item">
+            <h2>Usuario con más Registros</h2>
+            {% if trabajador_con_mas_registros %}
+                <p>Usuario: {{trabajador_con_mas_registros.user__username }}</p>
+                <p>Número de Registros: {{trabajador_con_mas_registros.registros }}</p>
+            {% else %}
+                <p>No hay trabajadores con registros este mes</p>
+            {% endif %}
+         </div>
+
+            
+         <div class="dashboard-item">
+            <h2>Usuario con menos Registros</h2>
+                <p>Usuario: {{registros_menos_por_mes.user__username }}</p>
+                <p>Número de Registros: {{registros_menos_por_mes.registros}}</p>
+         </div>
+
+         <div class="dashboard-item">
             <h2>Usuarios Registrados</h2>
             <ul>
             {% for usuario in usuarios_registrados %}
             <li>{{usuario}}</li>
             {% endfor %}
             </ul>
-         </div
-
-         <div class="dashboard-item">
-            <h2>Trabajador con Más OT Este Mes</h2>
-            <p>{{ trabajador_mas_ot }}</p>
         </div>
-
-         <div class="dashboard-item">
-            <h2>Total de Registros</h2>
-            <p>{{ total_registros_count }}</p>
-         </div>
 
          <div class="dashboard-item">
             <h2>Registros por Mes</h2>
@@ -207,7 +222,7 @@
            labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
            datasets: [{
               label: 'Registros por Mes',
-              data:'',
+              data:JSON.parse('{{ data | safe}}'),
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1
