@@ -27,6 +27,15 @@ class UserProfile(models.Model):
     direccio= models.CharField(max_length=100,null=True, blank=True)
     foto = models.ImageField(upload_to='user_photos/', null=True, blank=True)
 
+    def get_full_name(self):
+        return f"{self.nombre} {self.apellido}"
+
+    def get_username(self):
+        return self.user.username
+
+    def get_photo_url(self):
+        return self.foto.url if self.foto else None
+
 
 
 User.email=models.EmailField()

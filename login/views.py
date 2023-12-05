@@ -280,7 +280,7 @@ def eliminar(request, id):
 def inicio(request):
     today = datetime.now().date()
 
-    usuarios_registrados= User.objects.all().values_list('username', flat=True)[:5]
+    usuarios_registrados= User.objects.all().order_by('-date_joined')[:5]
 
 
 

@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     <style type="text/css">
 
     body{
@@ -112,6 +113,12 @@
       .dashboard-item:hover {
       transform: scale(1.05);
      }
+     .total-ot-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
 
       .dashboard-item h2{
         color:#333;
@@ -154,6 +161,111 @@
         font-size: 16px;
 }
 
+.dark-card {
+    background-color: #333;  
+    color: #fff;
+    border-radius: 10px;  
+    padding: 20px; 
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    transition: background-color 0.3s ease-in-out;  
+    height: 100px;
+    width: 300px;
+}
+.dark-card h2 {
+    color: #fff;
+}
+
+.dark-card p{
+    color: #fff;
+}
+
+.dark-card:hover {
+    background-color: #555;  
+}
+
+.usuarios{
+    background-color: #333;  
+    color: #fff;
+    border-radius: 10px;  
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    transition: background-color 0.3s ease-in-out;  
+    height: 200px;
+    width: 400px;
+}
+
+.usuarios h2 {
+    color: #fff;
+}
+
+.usuarios p{
+    color: #fff;
+}
+
+.dark-card:hover {
+    background-color: #555;  
+}
+
+.ultimos{
+    background-color: #333;  
+    color: #fff;
+    border-radius: 10px;  
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    transition: background-color 0.3s ease-in-out; 
+    width: 400px;
+}
+
+.ultimos h2 {
+    color: #fff;
+}
+
+.ultimos .liultimos{
+    color: #fff;
+    font-size: 16px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dark-card:hover {
+    background-color: #555;  
+}
+
+.dashboard-row{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    
+}
+
+.dashboard-item{
+    flex: 0 0 calc(50% -20px);
+    margin:10px;
+}
+
+.dark-card{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grafico{
+    background-color: #333;  
+    color: #fff;
+    border-radius: 10px;  
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+    transition: background-color 0.3s ease-in-out; 
+    width: 400px;
+
+}
+
+.grafico h2{
+    color: #fff;
+}
+
 
       </style>
 </head>
@@ -193,21 +305,16 @@
 
         
 
-         <div class="dashboard-item">
+         <div class="dashboard-item dark-card">
+            <i class="fas fa-database fa-2x"></i>
             <h2>Total de OT</h2>
             <p>{{ total_registros_count }}</p>
          </div>
 
-         <div class="dashboard-item">
-            <h2>Últimos Usuarios Registrados</h2>
-            <ul>
-            {% for usuario in usuarios_registrados %}
-            <li>{{usuario}}</li>
-            {% endfor %}
-            </ul>
-        </div>
-
-         <div class="dashboard-item">
+         
+         <div class="dashboard-row">
+         <div class="dashboard-item usuarios">
+            <i class="fas fa-trophy fa-2x"></i>
             <h2>Usuario con más Registros</h2>
             {% if trabajador_con_mas_registros %}
                 <p>Usuario: {{trabajador_con_mas_registros.user__username }}</p>
@@ -218,21 +325,32 @@
          </div>
 
             
-         <div class="dashboard-item">
+         <div class="dashboard-item usuarios">
+            <i class="fas fa-long-arrow-alt-down fa-2x"></i>
             <h2>Usuario con menos Registros</h2>
                 <p>Usuario: {{registros_menos_por_mes.user__username }}</p>
                 <p>Número de Registros: {{registros_menos_por_mes.registros}}</p>
          </div>
+         </div>
 
-        
+         <div class="dashboard-row">
+         <div class="dashboard-item ultimos">
+            <i class="fas fa-users fa-2x"></i>
+            <h2>Últimos Usuarios Registrados</h2>
+            <ul>
+            {% for usuario in usuarios_registrados %}
+            <li class="liultimos"> {{usuario}}</li>
+            {% endfor %}
+            </ul>
+        </div>
 
-         <div class="dashboard-item">
+         <div class="dashboard-item grafico">
             <h2>Registros por Mes</h2>
             <canvas id="regPorMesChart" width="400" height="200"></canvas>
          </div>
 
         </div>
-
+        </div>
 
 
     </div>
@@ -253,10 +371,26 @@
               borderWidth: 1
            }]
         };
+
+        var opcionesGrafico = {
+            scales: {
+                x: [{
+         ticks: {
+            color: 'white' 
+                 }
+             }],
+                y: [{
+         ticks: {
+            color: 'white'
+                }
+            }]
+        }
+    };
   
         var regPorMesChart = new Chart(document.getElementById('regPorMesChart'), {
            type: 'bar',
-           data: registrosPorMesData
+           data: registrosPorMesData,
+           options: opcionesGrafico,
         });
 
 
