@@ -14,7 +14,7 @@ class Formulario(models.Model):
     rut = models.CharField(max_length=12,unique=True)
     direccion = models.CharField(max_length=100)
     contacto=models.CharField(max_length=30,null=True, blank=True)
-    fono = models.CharField(max_length=8, validators=[MaxLengthValidator(limit_value=8,message='El teléfono debe ser de 8 caracteres')])
+    fono = models.CharField(max_length=9, validators=[MaxLengthValidator(limit_value=9,message='El teléfono debe ser de 9 caracteres')])
     descripcion = models.CharField(max_length=200)
     formulario_id = models.BigIntegerField(unique=True,null=True, blank=True)
     
@@ -23,6 +23,9 @@ class UserProfile(models.Model):
     email = models.EmailField()
     nombre= models.CharField(max_length=30,null=True, blank=True)
     apellido=models.CharField(max_length=30,null=True, blank=True)
+    telefono= models.CharField(max_length=9,null=True, blank=True, validators=[MaxLengthValidator(limit_value=9,message='El teléfono debe ser de 9 caracteres')])
+    direccio= models.CharField(max_length=100,null=True, blank=True)
+    foto = models.ImageField(upload_to='user_photos/', null=True, blank=True)
 
 
 

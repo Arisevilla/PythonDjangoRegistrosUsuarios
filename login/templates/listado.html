@@ -91,6 +91,7 @@
       .table-container{
         margin-top: 20px;
         overflow-x:auto;
+        width: 100%;
       }
 
       .table{
@@ -99,6 +100,7 @@
        width: 100%;
        border-collapse:collapse;
        margin-top: 10px;
+       table-layout: fixed;
       }
 
       .table th,
@@ -106,7 +108,21 @@
         border:1px solid #ddd;
         padding: 10px;
         text-align: center;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+
+      .table th a{
+        text-decoration: none;
+        color:#fff;
+        font-size:12px;
+        display: inline-block;
+        vertical-align: middle;
+        
+      }
+
+
 
       .table .actions{
         display: flex;
@@ -194,6 +210,11 @@
    font-weight: bold;
 }
 
+.table-dark a{
+  color:#fff
+  
+}
+
 
   
     </style>
@@ -216,12 +237,18 @@
        <li>
          <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
        </li>
+       {% if user.is_staff %}
+      <li>
+        <i class ='bx bx-user'></i><a href="{% url 'registro' %}">Usuarios</a>
+      </li>
+    {% endif %}
      </ul>
     </div>
 
 <div class="table-container">
   <form method="GET" action="{% url 'listado' %}" class="search-form">
     <select name="campo">
+      <option value="" {% if campo == '' %}selected{% endif %}>Seleccionar</option>
       <option value="id" {% if campo == 'id' %}selected{% endif %}>ID</option>
       <option value="name" {% if campo == 'name' %}selected{% endif %}>Nombre trabajador</option>
       <option value="cliente"{% if campo == 'cliente' %}selected{% endif %}>Cliente</option>
@@ -229,9 +256,24 @@
       <option value="rut"{% if campo == 'rut' %}selected{% endif %}>Rut</option>
       <option value="direccion"{% if campo == 'direccion' %}selected{% endif %}>Dirección</option>
       <option value="fono"{% if campo == 'fono' %}selected{% endif %}>Fono</option>
+      <option value="fono"{% if campo == 'fono' %}selected{% endif %}>Contacto</option>
     </select>
     
     <input type="text" name="valor" placeholder="Buscar" value="{{ valor }}">
+    <select name="campo2">
+  
+      <option value="id" {% if campo2 == 'id' %}selected{% endif %}>ID</option>
+      <option value="name" {% if campo2 == 'name' %}selected{% endif %}>Nombre trabajador</option>
+      <option value="cliente"{% if campo2 == 'cliente' %}selected{% endif %}>Cliente</option>
+      <option value="fecha"{% if campo2 == 'fecha' %}selected{% endif %}>Fecha</option>
+      <option value="rut"{% if campo2 == 'rut' %}selected{% endif %}>Rut</option>
+      <option value="direccion"{% if campo2 == 'direccion' %}selected{% endif %}>Dirección</option>
+      <option value="fono"{% if campo2 == 'fono' %}selected{% endif %}>Fono</option>
+      <option value="fono"{% if campo2 == 'fono' %}selected{% endif %}>Contacto</option>
+  </select>
+
+  <input type="text" name="valor2" placeholder="Buscar segundo campo" value="{{ valor2 }}">
+
 
     <button type="submit" class="btn btn-primary">Buscar</button>
     <button><a href="{% url 'listado' %}" class="btn btn-secondry">Mostrar todo</a></button>
@@ -242,13 +284,14 @@
 
 <table class="table table-light w-75 mx-auto text-center ">
     <tr class="table-dark w-75">
-      <th><a href="{{ url_ordenacion }}">ID</a></th>
-        <th>Cliente</th>
-        <th>Fecha</th>
-        <th>Rut</th>
-        <th>Dirección</th>
-        <th>Fono</th>
-        <th>Descripción</th>
+        <th>ID<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Cliente<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Fecha<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Rut<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Dirección<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Fono<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Contacto<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Descripción<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Acciones</th>
     </tr>
 {% for registro in registros %}
@@ -260,6 +303,7 @@
     <td>{{registro.rut}}</td>
     <td>{{registro.direccion}}</td>
     <td>{{registro.fono}}</td>
+    <td>{{registro.contacto}}</td>
     <td>{{registro.descripcion}}</td>
     <td class="actions">
     <form action="{% url 'detalle' registro.id %}" method="post">

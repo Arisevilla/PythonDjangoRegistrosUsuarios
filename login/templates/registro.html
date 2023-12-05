@@ -184,12 +184,24 @@
     <form action="" method="post" class="w-50 shadow mx-auto p-4 m-3">
         {% csrf_token %}
         <div class="registro-group">
+          Foto: <input type="file" name="foto" accept="image/*">
+      </div>
+
+        <div class="registro-group">
             Nombre: <input type="text" name="nombre" required> <br>
         </div>
 
         <div class="registro-group">
             Apellido: <input type="text" name="apellido" required> <br>
         </div>
+
+        <div class="registro-group">
+          Fono: <input type="number" name="telefono" required> <br>
+      </div>
+
+      <div class="registro-group">
+        Dirección: <input type="text" name="direccio" required> <br>
+    </div>
 
 
         <div class="registro-group">

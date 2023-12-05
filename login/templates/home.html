@@ -225,7 +225,7 @@
       </li>
       {% if user.is_staff %}
       <li>
-        <i class ='bx bx-user'></i><a href="{% url 'registro' %}">Registros de Usuarios</a>
+        <i class ='bx bx-user'></i><a href="{% url 'registro' %}">Usuarios</a>
       </li>
     {% endif %}
     </ul>
@@ -238,16 +238,13 @@
   <div class="container-busqueda">
    {%block content %}
    <div class="container-form">
-   <form method="post" action="{% url 'home' %}">
+   <form id="buscarForm" method="post" action="{% url 'home' %}">
     {% csrf_token %}
     <div class="registro-group">
       
       <label>Buscar por RUT:</label>
       <input type="text" name="rut" required>
     </div>
-    <div class="boton-buscar">
-    <input type="submit" value="Buscar">
-  </div>
   </form>
 </div>
 
@@ -272,6 +269,11 @@
       <div class="usuario-encontrado">
         <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
           {% csrf_token %}
+
+          <div class="registro-group">
+            <label>ID:</label> <input type="text" name="rut"  value="{{usuario.id}}">
+          </div>
+      
 
           <div class="registro-group">
             <label>Rut:</label> <input type="text" name="rut"  value="{{usuario.rut}}">
@@ -393,6 +395,20 @@
     
       {% endblock %}
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Obtener el campo del RUT y el formulario
+          var rutInput = document.querySelector("input[name='rut']");
+          var form = document.getElementById("buscarForm");
+  
+          // Agregar un evento para el cambio en el campo del RUT
+          rutInput.addEventListener("input", function() {
+              // Enviar el formulario automáticamente al completar el RUT
+              form.submit();
+          });
+      });
+  </script>
    
 
 

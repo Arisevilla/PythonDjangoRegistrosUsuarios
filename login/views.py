@@ -17,6 +17,7 @@ import json
 import uuid
 from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.cache import cache_control
 
 
 
@@ -26,6 +27,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 #Login
 def iniciar(request):
+    if request.user.is_authenticated:
+        logout(request)
+
     if request.method=='GET':
         return render(request,"iniciar.html", {'form':AuthenticationForm})
     else:
@@ -40,6 +44,9 @@ def iniciar(request):
 
     
 #Registrarse
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True, max_age=0)
 @staff_member_required
 def registro(request):
     if request.method=='GET':
@@ -47,15 +54,24 @@ def registro(request):
     else:
         if request.POST["password1"]!=request.POST["password2"]:
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Las contraseñas no coinciden"})
+        
+
         else:
-            
+            foto = request.FILES.get('foto')
             name= request.POST["username"]
             email= request.POST["email"]
             password = request.POST["password1"]
             nombre = request.POST["nombre"]
             apellido = request.POST["apellido"]
+            telefono = request.POST["telefono"]
+            direccio= request.POST["direccio"]
+
+            if len(telefono) !=9:
+                messages.error(request,'El teléfono debe tener 9 dígitos')
+                return redirect('registro')
+            
             user = User.objects.create_user(username=name,email=email,password=password)
-            user_profile= UserProfile.objects.create(user=user, email=email, nombre=nombre,apellido=apellido)
+            user_profile= UserProfile.objects.create(user=user, email=email, nombre=nombre,apellido=apellido,telefono=telefono,direccio=direccio,foto=foto)
             
             user.save()
             user_profile.save()
@@ -99,7 +115,7 @@ def home(request):
 def salir(request):
     logout(request)
     return redirect('../')
-
+@login_required
 def listado(request):
     registros = Formulario.objects.all()
 
@@ -116,17 +132,37 @@ def listado(request):
 
     campo = request.GET.get('campo','id')
     valor = request.GET.get('valor','')
+    campo2 = request.GET.get('campo2','')
+    valor2= request.GET.get('valor2','')
     orden = request.GET.get('orden', 'id')
     direccion = request.GET.get('direccion','asc')
 
     campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono']
 
-    if campo in campos_permitidos:
-        registros= Formulario.objects.filter(
-            Q(**{f'{campo}__icontains':valor})
-        )
-    else:
-        registros= Formulario.objects.all()
+    if campo in campos_permitidos and valor:
+            if campo == 'fecha':
+                try:
+                    fecha_busqueda = datetime.strptime(valor,'%d/%m/%Y').date()
+                    registros= registros.filter(Q(**{f'{campo}__date':fecha_busqueda}))
+                except ValueError:
+                    messages.error(request, 'Formato de fecha no válida')
+                    
+            else:
+                registros= registros.filter(
+                Q(**{f'{campo}__icontains':valor})
+            )
+
+    if campo2 in campos_permitidos and valor2:
+        if campo2 == 'fecha':
+                try:
+                    fecha_busqueda = datetime.strptime(valor2,'%d/%m/%Y').date()
+                    registros= registros.filter(Q(**{f'{campo2}__date':fecha_busqueda}))
+                except ValueError:
+                    messages.error(request, 'Formato de fecha no válida')
+        else:
+            registros=registros.filter(
+                Q(**{f'{campo2}__icontains': valor2})
+         )
 
     if direccion== 'asc':
         registros= registros.order_by(orden)
@@ -143,10 +179,18 @@ def listado(request):
     except EmptyPage:
         registros = paginator.page(paginator.num_pages)
 
+
+
     if direccion == 'asc':
-        url_ordenacion = f'?campo={campo}&valor={valor}&orden={orden}&direccion=desc'
+        orden_asc = 'desc'
+        orden_desc = 'asc'
     else:
-        url_ordenacion = f'?campo={campo}&valor={valor}&orden={orden}&direccion=asc'
+        orden_asc = 'asc'
+        orden_desc = 'desc'
+
+    url_ordenacion_asc = f'?campo={campo}&valor={valor}&orden={orden}&direccion={orden_asc}'
+    url_ordenacion_desc = f'?campo={campo}&valor={valor}&orden={orden}&direccion={orden_desc}'
+
 
                                                   
     return render(request,"listado.html", {
@@ -157,7 +201,8 @@ def listado(request):
         'valor':valor,
         'orden':orden,
         'direccion':direccion,
-        'url_ordenacion': url_ordenacion,
+        'url_ordenacion_asc': url_ordenacion_asc,
+        'url_ordenacion_desc': url_ordenacion_desc,
     })
 
 
@@ -179,7 +224,7 @@ def guardar(request):
         rut=rut.replace("-","").replace(".","").upper()
         print(f"Rut sin formato: {rut}")
 
-        if not rut[:-1].isdigit() or not rut[-1] in ('0-1-2-3-4-5-6-7-8-9K'):
+        if not rut[:-1].isdigit() or not rut[-1] in ('0','1','2','3','4','5','6','7','8','9','K','k'):
             print("Error: No es un digito o el digito verificador no es 'K' ")
             return False
         
@@ -191,7 +236,9 @@ def guardar(request):
         expected_digit='K' if expected_digit == 10 else str(expected_digit)
 
         print(f"Valor esperado del digito verificador: {expected_digit}")
-        return expected_digit == rut[-1].lower()
+        print(f"Dígito verificador ingresado: {rut[-1].upper()}")
+
+        return expected_digit == rut[-1].upper()
     
     rut_valido= validar_rut(rut)
     
@@ -205,13 +252,13 @@ def guardar(request):
             messages.error(request,'El rut es inválido')
             return redirect('home')
            
-
+@login_required
 def detalle(request,id):
     registro= Formulario.objects.get(pk=id)
     return render(request,"listadoEditar.html",{
         'registro': registro
     })
-
+@login_required
 def editar(request):
     cliente= request.POST["cliente"]
     rut= request.POST["rut"]
@@ -222,17 +269,18 @@ def editar(request):
     Formulario.objects.filter(pk=id).update(id=id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
     messages.success(request, 'Registro actualizado')
     return redirect('listado')
-
+@login_required
 def eliminar(request, id):
     registro = Formulario.objects.filter(pk=id)
     registro.delete()
     messages.success(request,'Registro eliminado')
     return redirect('listado')
 
+@login_required
 def inicio(request):
     today = datetime.now().date()
 
-    usuarios_registrados= User.objects.all().values_list('username', flat=True)
+    usuarios_registrados= User.objects.all().values_list('username', flat=True)[:5]
 
 
 
