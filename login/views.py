@@ -87,16 +87,24 @@ def registro(request):
             user.save()
             user_profile.save()
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Usuario registrado"})
+        
 def validar_rut(rut):
     rut= rut.replace("-","").replace(".","").upper()
-    if not rut[:-1].isdigit() or not rut[-1] in ('0','1','2','3','4','5','6','7','8','9','K'):
+    print(f"Rut sin formato: {rut}")
+    if not rut[:-1].isdigit() or not rut[-1] in ('0','1','2','3','4','5','6','7','8','9','K','k'):
+        print("Error: No es un digito o el digito verificador no es 'K' ")
         return False
     reversed_digits = map(int, reversed(rut[:-1]))
     factors = [2,3,4,5,6,7,2,3,4,5,6,7]
     s = sum(d * f for d, f in zip(reversed_digits, factors))
     expected_digit = (11 - s % 11) % 11
+    expected_digit='K' if expected_digit == 10 else str(expected_digit)
+
+    print(f"Valor esperado del digito verificador: {expected_digit}")
+    print(f"Dígito verificador ingresado: {rut[-1].upper()}")
 
     return str(expected_digit)== rut[-1].upper()
+   
 
         
 class AtomicCounter:
@@ -236,7 +244,7 @@ def guardar(request):
     fono= request.POST["fono"]
     descripcion= request.POST["descripcion"]
     contacto= request.POST["contacto"]
-    mail=request.POST["mail"]
+    mail=request.POST["email"]
 
     if len(fono) !=9:
         messages.error(request,'El teléfono debe tener 9 dígitos')

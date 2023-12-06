@@ -270,6 +270,7 @@
       <option value="direccion"{% if campo == 'direccion' %}selected{% endif %}>Dirección</option>
       <option value="fono"{% if campo == 'fono' %}selected{% endif %}>Fono</option>
       <option value="contacto"{% if campo == 'contacto' %}selected{% endif %}>Contacto</option>
+      <option value="mail"{% if campo == 'mail' %}selected{% endif %}>Email</option>
     </select>
     
     <input type="text" name="valor" placeholder="Buscar" value="{{ valor }}">
@@ -283,6 +284,7 @@
       <option value="direccion"{% if campo2 == 'direccion' %}selected{% endif %}>Dirección</option>
       <option value="fono"{% if campo2 == 'fono' %}selected{% endif %}>Fono</option>
       <option value="contacto"{% if campo2 == 'contacto' %}selected{% endif %}>Contacto</option>
+      <option value="mail"{% if campo2 == 'mail' %}selected{% endif %}>Email</option>
   </select>
 
   <input type="text" name="valor2" placeholder="Buscar segundo campo" value="{{ valor2 }}">
@@ -303,6 +305,7 @@
         <th>Rut<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Dirección<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Fono<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Mail<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Contacto<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Descripción<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Acciones</th>
@@ -316,6 +319,7 @@
     <td>{{registro.rut}}</td>
     <td>{{registro.direccion}}</td>
     <td>{{registro.fono}}</td>
+    <td>{{registro.mail}}</td>
     <td>{{registro.contacto}}</td>
     <td>{{registro.descripcion}}</td>
     <td class="actions">

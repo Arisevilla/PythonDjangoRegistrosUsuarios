@@ -35,9 +35,7 @@
         flex-direction: column;
         }
 
-        .empresa-orden{
-          padding-left: 350px;
-        }
+        
 
       .title-registro h2{
         margin:0;
@@ -252,7 +250,11 @@
     }
 
     .text-center{
-      padding-right: 50px;
+      padding-right: 30px;
+    }
+
+    .user{
+      padding-top: 50px;
     }
 
   
@@ -319,15 +321,16 @@
 
     <div class="title-registro">
       <div class="dashboard-row">
+        {% if nombre and apellido %}
+        <p class="user">{{nombre}} {{apellido}}</p>
+      {% endif%}
       <div class="empresa-orden">
         <i class='bx bxl-magento'></i> 
         <h2>Magento</h2>
       </div>
       <h4 class="text-center">Nro. OT: {% if nuevo_id %}{{ nuevo_id }}{% endif %}</h4>
 
-      {% if nombre and apellido %}
-        <p class="user">{{nombre}} {{apellido}}</p>
-      {% endif%}
+      
     </div>
     </div>
 

@@ -11,7 +11,7 @@ class Formulario(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
     name= models.CharField(max_length=30,null=True, blank=True)
     cliente = models.CharField(max_length=30)
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True)
     rut = models.CharField(max_length=12,unique=True)
     direccion = models.CharField(max_length=100)
     contacto=models.CharField(max_length=30,null=True, blank=True)
