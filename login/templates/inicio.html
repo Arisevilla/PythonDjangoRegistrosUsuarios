@@ -26,7 +26,19 @@
         padding:20px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
+        position:relative;
         
+      }
+
+      .link-login{
+        position: absolute;
+        bottom:20px;
+        left:10px;
+        color: #fff;
+        text-decoration:none;
+        margin-right: 10px;
+        color:#fff;
+        font-size: 20px;
       }
 
       .navbar ul{
@@ -298,6 +310,9 @@
              </li>
             {% endif %}
          </ul>
+         <div class="link-login">  
+            <a href="../salir/"><i class='bx bx-right-arrow-alt'></i>Salir</a>
+          </div>
 
         </div>
 
@@ -371,26 +386,11 @@
               borderWidth: 1
            }]
         };
-
-        var opcionesGrafico = {
-            scales: {
-                x: [{
-         ticks: {
-            color: 'white' 
-                 }
-             }],
-                y: [{
-         ticks: {
-            color: 'white'
-                }
-            }]
-        }
-    };
   
         var regPorMesChart = new Chart(document.getElementById('regPorMesChart'), {
            type: 'bar',
            data: registrosPorMesData,
-           options: opcionesGrafico,
+          
         });
 
 

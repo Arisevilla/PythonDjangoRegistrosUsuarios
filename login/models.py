@@ -3,6 +3,7 @@ from django.core.validators import MaxLengthValidator
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.db.models import Count
+from django.utils import timezone
 
 
 # Create your models here.
@@ -26,16 +27,7 @@ class UserProfile(models.Model):
     telefono= models.CharField(max_length=9,null=True, blank=True, validators=[MaxLengthValidator(limit_value=9,message='El teléfono debe ser de 9 caracteres')])
     direccio= models.CharField(max_length=100,null=True, blank=True)
     foto = models.ImageField(upload_to='user_photos/', null=True, blank=True)
-
-    def get_full_name(self):
-        return f"{self.nombre} {self.apellido}"
-
-    def get_username(self):
-        return self.user.username
-
-    def get_photo_url(self):
-        return self.foto.url if self.foto else None
-
+    rut = models.CharField(max_length=12,unique=True, null=True, blank=True)
 
 
 User.email=models.EmailField()

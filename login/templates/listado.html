@@ -32,7 +32,18 @@
         padding:20px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
-        
+        position:relative;
+      }
+
+      .link-login{
+        position: absolute;
+        bottom:20px;
+        left:10px;
+        color: #fff;
+        text-decoration:none;
+        margin-right: 10px;
+        color:#fff;
+        font-size: 20px;
       }
 
       .navbar ul{
@@ -243,12 +254,14 @@
       </li>
     {% endif %}
      </ul>
+     <div class="link-login">  
+      <a href="../salir/"><i class='bx bx-right-arrow-alt'></i>Salir</a>
+    </div>
     </div>
 
 <div class="table-container">
   <form method="GET" action="{% url 'listado' %}" class="search-form">
     <select name="campo">
-      <option value="" {% if campo == '' %}selected{% endif %}>Seleccionar</option>
       <option value="id" {% if campo == 'id' %}selected{% endif %}>ID</option>
       <option value="name" {% if campo == 'name' %}selected{% endif %}>Nombre trabajador</option>
       <option value="cliente"{% if campo == 'cliente' %}selected{% endif %}>Cliente</option>
@@ -256,7 +269,7 @@
       <option value="rut"{% if campo == 'rut' %}selected{% endif %}>Rut</option>
       <option value="direccion"{% if campo == 'direccion' %}selected{% endif %}>Dirección</option>
       <option value="fono"{% if campo == 'fono' %}selected{% endif %}>Fono</option>
-      <option value="fono"{% if campo == 'fono' %}selected{% endif %}>Contacto</option>
+      <option value="contacto"{% if campo == 'contacto' %}selected{% endif %}>Contacto</option>
     </select>
     
     <input type="text" name="valor" placeholder="Buscar" value="{{ valor }}">
@@ -269,7 +282,7 @@
       <option value="rut"{% if campo2 == 'rut' %}selected{% endif %}>Rut</option>
       <option value="direccion"{% if campo2 == 'direccion' %}selected{% endif %}>Dirección</option>
       <option value="fono"{% if campo2 == 'fono' %}selected{% endif %}>Fono</option>
-      <option value="fono"{% if campo2 == 'fono' %}selected{% endif %}>Contacto</option>
+      <option value="contacto"{% if campo2 == 'contacto' %}selected{% endif %}>Contacto</option>
   </select>
 
   <input type="text" name="valor2" placeholder="Buscar segundo campo" value="{{ valor2 }}">

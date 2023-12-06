@@ -27,14 +27,22 @@
             text-align: center;
             color: #31303D;
             margin-bottom:20px;
+            
         }
 
         .title-registro h2{
             margin:0;
+            
         }
 
         .registro-group {
             margin-bottom:15px;
+            flex:1;
+            margin-right: 10px;
+            flex: 0 0 calc(33.33% - 10px);
+            
+           
+           
         }
 
         .registro-group input{
@@ -43,6 +51,7 @@
             border:1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            
             
         }
 
@@ -62,6 +71,16 @@
             cursor:pointer;
         }
 
+        .botones a{
+          padding: 10px;
+          text-decoration: none;
+          border-radius: 4px;
+          background-color: blue;
+          color: #fff;
+          cursor:pointer;
+          font-size: 13px;
+        }
+
         .link-login a{
             color:#007bff;
             text-decoration: none;
@@ -74,13 +93,17 @@
         }
 
         .container-form{
-            max-width: 400px;
-            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
             margin: auto;
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            height: 100%;
+           
         }
 
 
@@ -94,9 +117,22 @@
         padding:20px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
+        position:relative;
         
       }
 
+      .link-login{
+        position: absolute;
+        bottom:20px;
+        left:10px;
+        color: #fff;
+        text-decoration:none;
+        margin-right: 10px;
+        color:#fff;
+        font-size: 20px;
+      }
+
+     
       .navbar ul{
         margin:0;
         padding: 0;
@@ -149,11 +185,45 @@
         color:#fff;
         margin:0;
       }
+      .formulario{
+      
+        width: 100%;
+        
+        gap:10px
+      }
 
+      .dashboard-row{
+    display:flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    
+}
+.title-registro-container {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+    }
 
 
 
     </style>
+        <script>
+          function mostrarImagen(input) {
+              var fileInput = input;
+              var preview = document.getElementById('imagen-preview');
+  
+              var files = fileInput.files;
+              if (files.length > 0) {
+                  var reader = new FileReader();
+  
+                  reader.onload = function (e) {
+                      preview.src = e.target.result;
+                  };
+  
+                  reader.readAsDataURL(files[0]);
+              }
+          }
+      </script>
 
 </head>
 <body>
@@ -174,18 +244,34 @@
             <i class='bx bxs-data'></i><a href="{% url 'listado' %}">Informe</a>
           </li>
         </ul>
+
+        <div class="link-login">  
+          <a href="../salir/"><i class='bx bx-right-arrow-alt'></i>Salir</a>
+        </div>
         </div>
 
     <div class="container-form">
+      <form action="" method="post" class="formulario">
+        {% csrf_token %}
+      <div class="title-registro-container">
+    
+      <div class="registro-group">
+        
+        <img id="imagen-preview" style="width:70px;" alt="Imagen previa">
+        <br>
+        Foto: <input type="file" name="foto" accept="image/*" onchange="mostrarImagen(this);">
+        <br>
+        
+    </div>
     <div class="title-registro">
     <h2 class="text-center">Registro de Usuarios</h2>
     </div>
-
-    <form action="" method="post" class="w-50 shadow mx-auto p-4 m-3">
-        {% csrf_token %}
-        <div class="registro-group">
-          Foto: <input type="file" name="foto" accept="image/*">
-      </div>
+  </div>
+    
+        <div class="dashboard-row">
+          <div class="registro-group">
+            Rut<input type="text" name="rut" required> <br>
+          </div>
 
         <div class="registro-group">
             Nombre: <input type="text" name="nombre" required> <br>
@@ -194,7 +280,9 @@
         <div class="registro-group">
             Apellido: <input type="text" name="apellido" required> <br>
         </div>
+        </div>
 
+        <div class="dashboard-row">
         <div class="registro-group">
           Fono: <input type="number" name="telefono" required> <br>
       </div>
@@ -203,14 +291,17 @@
         Dirección: <input type="text" name="direccio" required> <br>
     </div>
 
+      <div class="registro-group">
+      Correo Electrónico: <input type="email" name="email" > <br>
+      </div>
+      </div>
 
+      <div class="dashboard-row">
         <div class="registro-group">
         Usuario: <input type="text" name="username" > <br>
         </div>
 
-        <div class="registro-group">
-        Correo Electrónico: <input type="email" name="email" > <br>
-        </div>
+        
 
         <div class="registro-group">
         Contraseña: <input type="password" name="password1"  > <br>
@@ -219,16 +310,18 @@
         <div class="registro-group">
         Confirmar Contraseña: <input type="password" name="password2"  > <br>
         </div>
+        </div>
 
         <div class="botones">
 
         <div class="boton-registrarse">
         <input type="submit" value="Registrarse"> <br>
         </div>
+
+        <a href="../salir/">Login</a>
+
         
-        <div class="link-login">
-        <a href="../">Login</a>
-        </div>
+      
 
         </div>
 

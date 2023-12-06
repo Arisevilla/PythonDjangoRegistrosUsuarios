@@ -209,6 +209,7 @@
 
         
         <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="{% url 'editar' %}">
+          {% csrf_token %}
         <input type="hidden" name="id" value="{{registro.id}}">
 
         <div class="registro-group">

@@ -18,6 +18,10 @@ import uuid
 from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.cache import cache_control
+from django.utils import timezone
+from django.http import HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_protect
+
 
 
 
@@ -65,17 +69,35 @@ def registro(request):
             apellido = request.POST["apellido"]
             telefono = request.POST["telefono"]
             direccio= request.POST["direccio"]
+            rut=request.POST["rut"]
 
             if len(telefono) !=9:
                 messages.error(request,'El teléfono debe tener 9 dígitos')
                 return redirect('registro')
             
+            rut_valido=validar_rut(rut)
+
+            if not rut_valido:
+                messages.error(request, 'El rut ingresado no es válido')
+                return redirect('registro')
+            
             user = User.objects.create_user(username=name,email=email,password=password)
-            user_profile= UserProfile.objects.create(user=user, email=email, nombre=nombre,apellido=apellido,telefono=telefono,direccio=direccio,foto=foto)
+            user_profile= UserProfile.objects.create(user=user, email=email, nombre=nombre,apellido=apellido,telefono=telefono,direccio=direccio,foto=foto,rut=rut)
             
             user.save()
             user_profile.save()
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Usuario registrado"})
+def validar_rut(rut):
+    rut= rut.replace("-","").replace(".","").upper()
+    if not rut[:-1].isdigit() or not rut[-1] in ('0','1','2','3','4','5','6','7','8','9','K'):
+        return False
+    reversed_digits = map(int, reversed(rut[:-1]))
+    factors = [2,3,4,5,6,7,2,3,4,5,6,7]
+    s = sum(d * f for d, f in zip(reversed_digits, factors))
+    expected_digit = (11 - s % 11) % 11
+
+    return str(expected_digit)== rut[-1].upper()
+
         
 class AtomicCounter:
     counter = 1000
@@ -258,8 +280,13 @@ def detalle(request,id):
     return render(request,"listadoEditar.html",{
         'registro': registro
     })
+
 @login_required
+@csrf_protect
 def editar(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest("Método no permitido")
+
     cliente= request.POST["cliente"]
     rut= request.POST["rut"]
     direccion= request.POST["direccion"]
@@ -278,7 +305,7 @@ def eliminar(request, id):
 
 @login_required
 def inicio(request):
-    today = datetime.now().date()
+    today = timezone.now().date()
 
     usuarios_registrados= User.objects.all().order_by('-date_joined')[:5]
 
@@ -316,6 +343,9 @@ def inicio(request):
     labels= [nombre_mes_actual]
     data = [registros_mes['registros'] if registros_mes else 0 ]
 
+    print("trabajador_con_mas_registros:", trabajador_con_mas_registros)
+    print("registros_mes:", registros_mes)
+    
     
 
     return render(request, 'inicio.html',{
