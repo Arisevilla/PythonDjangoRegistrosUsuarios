@@ -236,6 +236,7 @@ def guardar(request):
     fono= request.POST["fono"]
     descripcion= request.POST["descripcion"]
     contacto= request.POST["contacto"]
+    mail=request.POST["mail"]
 
     if len(fono) !=9:
         messages.error(request,'El teléfono debe tener 9 dígitos')
@@ -266,7 +267,7 @@ def guardar(request):
     
     if rut_valido:
             formulario_id =  AtomicCounter.increment_and_get()
-            r = Formulario( id=formulario_id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user)
+            r = Formulario( id=formulario_id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user,mail=mail)
             r.save()
             messages.success(request, 'Registro agregado')
             return redirect('listado')

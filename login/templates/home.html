@@ -27,9 +27,16 @@
       }
 
       .title-registro{
-        text-align: left;
+        text-align: center;
         color: #31303D;
         margin-bottom:20px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        }
+
+        .empresa-orden{
+          padding-left: 350px;
         }
 
       .title-registro h2{
@@ -37,6 +44,15 @@
       }
         .registro-group{
           margin-bottom:15px;
+          flex:1;
+            margin-right: 10px;
+            flex: 0 0 calc(33.33% - 10px);
+            
+        }
+
+        .registro-group textarea{
+          width: 700px;
+          height: 100px;
         }
 
         .registro-group input, textarea{
@@ -68,14 +84,16 @@
         }
 
         .container-form{
-            max-width: 400px;
-            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
             margin: auto;
             background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            margin-top: 20px;
+            max-width: 800px;
+            
         }
 
         .container-busqueda{
@@ -212,6 +230,38 @@
           font-weight: bold;
           margin-top:10px;
         }
+
+        .dashboard-row{
+      display:flex;
+      justify-content: space-between;
+      margin-top: 20px;
+}
+
+    .formulario{
+      
+      width: 100%;
+      
+      gap:10px
+    }
+
+  .dashboard-row-textarea{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    }
+
+    .text-center{
+      padding-right: 50px;
+    }
+
+  
+
+
+    
+
+   
+        
   
     </style>
 </head>
@@ -252,8 +302,8 @@
 
   <div class="container-busqueda">
    {%block content %}
-   <div class="container-form">
-   <form id="buscarForm" method="post" action="{% url 'home' %}">
+   
+   <form id="buscarForm" method="post" action="{% url 'home' %}" class="formulario">
     {% csrf_token %}
     <div class="registro-group">
       
@@ -261,35 +311,35 @@
       <input type="text" name="rut" required>
     </div>
   </form>
-</div>
+
 
    <div class="container-form">
-    
+    <form  method="post" class="formulario" action="{% url 'guardar' %}">
+      {% csrf_token %}
+
     <div class="title-registro">
+      <div class="dashboard-row">
       <div class="empresa-orden">
         <i class='bx bxl-magento'></i> 
         <h2>Magento</h2>
       </div>
-      <h4 class="text-center">Orden de trabajo  - ID: {% if nuevo_id %}{{ nuevo_id }}{% endif %}</h4>
-
+      <h4 class="text-center">Nro. OT: {% if nuevo_id %}{{ nuevo_id }}{% endif %}</h4>
 
       {% if nombre and apellido %}
         <p class="user">{{nombre}} {{apellido}}</p>
       {% endif%}
+    </div>
     </div>
 
    
 
    {% if usuario %}
       <div class="usuario-encontrado">
-        <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
-          {% csrf_token %}
-
+      
+        <div class="dashboard-row">
           <div class="registro-group">
             <label>ID:</label> <input type="text" name="rut"  value="{{usuario.id}}">
           </div>
-      
-
           <div class="registro-group">
             <label>Rut:</label> <input type="text" name="rut"  value="{{usuario.rut}}">
           </div>
@@ -297,7 +347,9 @@
         <div class="registro-group">
           <label>Cliente:</label> <input type="text" name="cliente"  value="{{usuario.cliente}}">
         </div>
+      </div>
   
+      <div class="dashboard-row">
         <div class="registro-group">
           <label>Dirección:</label> <input type="text" name="direccion"  value="{{usuario.direccion}}">
         </div>
@@ -309,7 +361,9 @@
         <div class="registro-group">
           <label>Contacto:</label> <input type="text" name="contacto" value="{{usuario.contacto}}">
         </div>
-  
+        </div>
+        
+        <div class="dashboard-row-textarea">
         <div class="registro-group">
           <label>Descripción:</label>
           <textarea  name="descripcion">
@@ -317,6 +371,7 @@
   
           </textarea>
         </div>
+      </div>
   
         <div class="botones">
   
@@ -329,7 +384,10 @@
   
       </form>
       </div>
-      </div>
+  </div>
+  
+      
+      
 
       
       {%else%}
@@ -344,10 +402,11 @@
        
 
 
-      
-      <form  method="post" class="w-50 shadow mx-auto p-4 m-3" action="{% url 'guardar' %}">
+  
+      <form  method="post" class="formulario" action="{% url 'guardar' %}">
         {% csrf_token %}
 
+        <div class="dashboard-row">
         <div class="registro-group">
           <label>Rut:</label> <input type="text" name="rut"  required>
         </div>
@@ -357,23 +416,36 @@
       </div>
 
       <div class="registro-group">
-        <label>Dirección:</label> <input type="text" name="direccion"  required>
-      </div>
-
-      <div class="registro-group">
         <label>Fono:</label> <input type="number" name="fono"  required>
       </div>
+    </div>
 
+      
+
+    <div class="dashboard-row">
+      <div class="registro-group">
+        <label>Dirección:</label> <input type="text" name="direccion"  required>
+      </div>
+    
+    
       <div class="registro-group">
         <label>Contacto:</label> <input type="text" name="contacto" required>
       </div>
 
+      <div class="registro-group">
+        <label>Correo Electrónico:</label> <input type="email" name="email" required>
+      </div>
+    </div>
+
+      <div class="dashboard-row-textarea">
       <div class="registro-group">
         <label>Descripción:</label>
         <textarea  name="descripcion">
 
         </textarea>
       </div>
+    </div>
+  
 
       <div class="botones">
 
@@ -392,9 +464,12 @@
 
     </form>
     </div>
+    
+ 
 
     {% endif %}
   </div>
+  
       
 
 

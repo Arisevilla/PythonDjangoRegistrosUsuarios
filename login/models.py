@@ -18,6 +18,7 @@ class Formulario(models.Model):
     fono = models.CharField(max_length=9, validators=[MaxLengthValidator(limit_value=9,message='El teléfono debe ser de 9 caracteres')])
     descripcion = models.CharField(max_length=200)
     formulario_id = models.BigIntegerField(unique=True,null=True, blank=True)
+    mail=models.EmailField(null=True, blank=True)
     
 class UserProfile(models.Model):
     user= models.OneToOneField(User, on_delete=models.CASCADE)
