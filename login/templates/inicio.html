@@ -109,6 +109,7 @@
         flex-wrap: wrap;
         justify-content:space-around;
         display: flex;
+        padding-top: 20px;
 
         
       }
@@ -287,7 +288,7 @@
   left:0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   background-color:#0b1e5e;
   padding: 15px 20px;
   width: 1305px;
@@ -308,6 +309,26 @@
   margin-top: 20px;
 }
 
+.total-registros-usuario{
+  margin-left: 20px;
+  color: #fff;
+  font-size: 16px;
+  
+}
+
+.usuario-info{
+  display:flex;
+  align-items: center;
+}
+
+.fecha-ultimo-registro{
+  padding-right: 20px;
+}
+
+
+
+
+
 
       </style>
 </head>
@@ -315,13 +336,27 @@
 
 <body>
   <div class="navbar-horizontal">
-
-    {% if nombre and apellido %}
-    <p class="user">{{nombre}} {{apellido}}</p>
-    <i class='bx bx-user-circle'></i>
-    {% endif%}
     
-  </div>
+    <div class="usuario-info">
+    {% if nombre and apellido %}
+    <i class='bx bx-user-circle'></i>
+    <p class="user">{{nombre}} {{apellido}}</p>
+    
+    {% endif%}
+    <div class="total-registros-info">
+    {% if total_registros_usuario %}
+        <p class="total-registros-usuario">Total de Registros: {{ total_registros_usuario }}</p>
+{% endif %}
+</div>
+
+<div class="registro-info">
+  {% if fecha_ultimo_registro %}
+      <p class="fecha-ultimo-registro">Último Registro: {{ fecha_ultimo_registro|date:"d/m/Y" }}</p>
+  {% endif %}
+</div>
+</div>
+</div>
+
     <div class="container-home">
      
       

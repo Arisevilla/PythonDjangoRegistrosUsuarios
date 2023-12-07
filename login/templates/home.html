@@ -91,6 +91,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             max-width: 800px;
+            margin-top: 50px;
             
         }
 
@@ -405,12 +406,12 @@
 
 
   
-      <form  method="post" class="formulario" action="{% url 'guardar' %}">
+      <form  method="post" class="formulario" action="{% url 'guardar' %}" >
         {% csrf_token %}
 
         <div class="dashboard-row">
         <div class="registro-group">
-          <label>Rut:</label> <input type="text" name="rut"  required>
+          <label>Rut:</label> <input type="text" name="rut" required>
         </div>
     
       <div class="registro-group">
@@ -482,13 +483,9 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-          var rutInput = document.querySelector("input[name='rut']");
-          var form = document.getElementById("buscarForm");
-          rutInput.addEventListener("change", function() {
-              form.submit();
-          });
-      });
+ 
+      
+ 
   </script>
    
 

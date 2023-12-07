@@ -21,6 +21,7 @@ from django.views.decorators.cache import cache_control
 from django.utils import timezone
 from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse
 
 
 
@@ -374,8 +375,11 @@ def inicio(request):
             apellido = user_profile.apellido
         except UserProfile.DoesNotExist:
             pass
-
     
+    ultimo_registro = Formulario.objects.filter(user=request.user).aggregate(ultima_fecha=Max('fecha'))
+    fecha_ultimo_registro = ultimo_registro['ultima_fecha'] if ultimo_registro['ultima_fecha'] else None
+
+    total_registros_usuario = Formulario.objects.filter(user=request.user).count()
 
     return render(request, 'inicio.html',{
         'usuarios_registrados':usuarios_registrados,
@@ -388,6 +392,9 @@ def inicio(request):
         'registros_menos_por_mes':registros_menos_por_mes,
         'nombre':nombre,
         'apellido':apellido,
+        'total_registros_usuario': total_registros_usuario,
+        'fecha_ultimo_registro': fecha_ultimo_registro,
+
         
     })
 
