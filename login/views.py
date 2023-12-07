@@ -129,6 +129,7 @@ def home(request):
         except UserProfile.DoesNotExist:
             pass
 
+    usuario_encontrado= None
     if request.method == 'POST':
         rut= request.POST.get('rut', '')
         usuario_encontrado = Formulario.objects.filter(rut=rut).first()
@@ -167,13 +168,13 @@ def listado(request):
     orden = request.GET.get('orden', 'id')
     direccion = request.GET.get('direccion','asc')
 
-    campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono']
+    campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono','mail','contacto']
 
     if campo in campos_permitidos and valor:
             if campo == 'fecha':
                 try:
                     fecha_busqueda = datetime.strptime(valor,'%d/%m/%Y').date()
-                    registros= registros.filter(Q(**{f'{campo}__date':fecha_busqueda}))
+                    registros= registros.filter(Q(**{campo:fecha_busqueda}))
                 except ValueError:
                     messages.error(request, 'Formato de fecha no válida')
                     
@@ -186,7 +187,7 @@ def listado(request):
         if campo2 == 'fecha':
                 try:
                     fecha_busqueda = datetime.strptime(valor2,'%d/%m/%Y').date()
-                    registros= registros.filter(Q(**{f'{campo2}__date':fecha_busqueda}))
+                    registros= registros.filter(Q(**{campo2:fecha_busqueda}))
                 except ValueError:
                     messages.error(request, 'Formato de fecha no válida')
         else:
@@ -233,6 +234,7 @@ def listado(request):
         'direccion':direccion,
         'url_ordenacion_asc': url_ordenacion_asc,
         'url_ordenacion_desc': url_ordenacion_desc,
+        'username': request.user.username,
     })
 
 
@@ -273,15 +275,22 @@ def guardar(request):
     
     rut_valido= validar_rut(rut)
     
-    if rut_valido:
-            formulario_id =  AtomicCounter.increment_and_get()
-            r = Formulario( id=formulario_id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,user=request.user,mail=mail)
-            r.save()
-            messages.success(request, 'Registro agregado')
-            return redirect('listado')
+    if not rut_valido:
+        messages.error(request, 'El rut es inválido')
+        return redirect('home')
+    
+    usuario_existente= Formulario.objects.filter(rut=rut).first()
+
+    if usuario_existente:
+        print(f"Usuario existente: {usuario_existente}")
+        messages.info(request, 'El rut ya está registrado.')
+        return render(request, 'home.html', {'usuario': usuario_existente})
     else:
-            messages.error(request,'El rut es inválido')
-            return redirect('home')
+        formulario_id =AtomicCounter.increment_and_get()
+        r= Formulario(id=formulario_id, cliente=cliente, rut=rut,direccion=direccion, fono=fono,descripcion=descripcion, contacto=contacto, user=request.user,mail=mail)
+        r.save()
+        messages.success(request,'Registro agregado')
+        return redirect('listado')
            
 @login_required
 def detalle(request,id):
@@ -355,6 +364,17 @@ def inicio(request):
     print("trabajador_con_mas_registros:", trabajador_con_mas_registros)
     print("registros_mes:", registros_mes)
     
+    nombre= None
+    apellido = None
+
+    if request.user.is_authenticated:
+        try:
+            user_profile= UserProfile.objects.get(user=request.user)
+            nombre= user_profile.nombre
+            apellido = user_profile.apellido
+        except UserProfile.DoesNotExist:
+            pass
+
     
 
     return render(request, 'inicio.html',{
@@ -366,4 +386,9 @@ def inicio(request):
         'registros_mes': registros_mes,
         'trabajador_con_mas_registros': trabajador_con_mas_registros,
         'registros_menos_por_mes':registros_menos_por_mes,
+        'nombre':nombre,
+        'apellido':apellido,
+        
     })
+
+

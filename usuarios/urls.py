@@ -30,4 +30,5 @@ urlpatterns = [
     path('listado/editar',views.editar, name='editar'),
     path('listado/eliminar/<int:id>',views.eliminar,name='eliminar'),
     path('inicio/',views.inicio,name='inicio'),
+    
 ]
