@@ -20,7 +20,8 @@
         min-height: 100vh;
         margin:0;
         font-family:Arial;
-        gap: 30px;
+        
+        width: 100%;
       }
     
       .navbar {
@@ -108,11 +109,14 @@
       .table{
        display:flex;
        flex-direction:column;
-       width: 100%;
+       min-width: 100%;
        border-collapse:collapse;
        margin-top: 10px;
        table-layout: fixed;
       }
+      .table thead {
+    white-space: nowrap;
+}
 
       .table th,
       .table td{
@@ -300,6 +304,7 @@
 <table class="table table-light w-75 mx-auto text-center ">
     <tr class="table-dark w-75">
         <th>ID<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
+        <th>Trabajador<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Cliente<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Fecha<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
         <th>Rut<a href="{{ url_ordenacion_asc }}"> &#9660;</a></th>
@@ -314,6 +319,7 @@
 <div class="table-row">
     <tr>
     <td>{{registro.id}}</td>
+    <td>{{registro.user.username}}</td>
     <td>{{registro.cliente}}</td>
     <td>{{registro.fecha|date:"d/m/Y"}}</td>
     <td>{{registro.rut}}</td>
