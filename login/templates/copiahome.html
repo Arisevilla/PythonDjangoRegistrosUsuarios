@@ -338,8 +338,6 @@
 
    {% if usuario %}
       <div class="usuario-encontrado">
-
-       
       
         <div class="dashboard-row">
           <div class="registro-group">
@@ -471,21 +469,14 @@
         {% endfor %}
         </div>
         {% endif %}
-        
+
     </form>
     </div>
-
-    <div class="dashboard-row" id="info-usuario-container">
-
-    </div>
-    
     
  
 
     {% endif %}
   </div>
-
-  
 
   
   
@@ -511,18 +502,23 @@ $(document).ready(function () {
                 data: { 'rut': rut },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+                  console.log(data); 
                     if (data.usuario_encontrado) {
-                        // Rellena los valores de los campos de entrada
-                        $('#id_cliente').val(data.info_usuario.cliente);
-                        $('#id_fono').val(data.info_usuario.fono);
-                        $('#id_direccion').val(data.info_usuario.direccion);
-                        $('#contacto').val(data.info_usuario.contacto);
-                        $('#email').val(data.info_usuario.mail);
-                        $('#descripcion').val(data.info_usuario.descripcion);
+                        // Muestra la información del usuario
+                        var infoUsuario = data.info_usuario;
+                        var infoContainer = $('#info-usuario-container');
+                        infoContainer.html(`
+                            <p>Rut: ${infoUsuario.rut}</p>
+                            <p>Cliente: ${infoUsuario.cliente}</p>
+                            <p>Fono: ${infoUsuario.fono}</p>
+                            <p>Dirección: ${infoUsuario.direccion}</p>
+                            <p>Contacto: ${infoUsuario.contacto}</p>
+                            <p>Correo Electrónico: ${infoUsuario.mail}</p>
+                            <p>Descripción: ${infoUsuario.descripcion}</p>
+                        `);
                     } else {
                         // Borra la información del usuario si no se encuentra
-                        $('#id_cliente, #id_fono, #id_direccion, #contacto, #email, #descripcion').val('');
+                        $('#info-usuario-container').html('');
                     }
                 }
             });
