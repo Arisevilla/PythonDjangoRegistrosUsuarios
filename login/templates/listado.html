@@ -267,7 +267,6 @@
   <form method="GET" action="{% url 'listado' %}" class="search-form">
     <select name="campo">
       <option value="id" {% if campo == 'id' %}selected{% endif %}>ID</option>
-      <option value="name" {% if campo == 'name' %}selected{% endif %}>Nombre trabajador</option>
       <option value="cliente"{% if campo == 'cliente' %}selected{% endif %}>Cliente</option>
       <option value="fecha"{% if campo == 'fecha' %}selected{% endif %}>Fecha</option>
       <option value="rut"{% if campo == 'rut' %}selected{% endif %}>Rut</option>
@@ -281,7 +280,6 @@
     <select name="campo2">
   
       <option value="id" {% if campo2 == 'id' %}selected{% endif %}>ID</option>
-      <option value="name" {% if campo2 == 'name' %}selected{% endif %}>Nombre trabajador</option>
       <option value="cliente"{% if campo2 == 'cliente' %}selected{% endif %}>Cliente</option>
       <option value="fecha"{% if campo2 == 'fecha' %}selected{% endif %}>Fecha</option>
       <option value="rut"{% if campo2 == 'rut' %}selected{% endif %}>Rut</option>

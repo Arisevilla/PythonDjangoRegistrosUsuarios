@@ -80,7 +80,7 @@ def registro(request):
 
             if not rut_valido:
                 messages.error(request, 'El rut ingresado no es válido')
-                return redirect('registro')
+                return render(request, "registro.html", {'form': UserCreationForm, 'rut_error': 'Error en el RUT'})
             
             user = User.objects.create_user(username=name,email=email,password=password)
             user_profile= UserProfile.objects.create(user=user, email=email, nombre=nombre,apellido=apellido,telefono=telefono,direccio=direccio,foto=foto,rut=rut)
@@ -169,7 +169,7 @@ def listado(request):
     orden = request.GET.get('orden', 'id')
     direccion = request.GET.get('direccion','asc')
 
-    campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono','mail','contacto']
+    campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono','mail','contacto','user.username']
 
     if campo in campos_permitidos and valor:
             if campo == 'fecha':

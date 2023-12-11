@@ -272,7 +272,11 @@
     
         <div class="dashboard-row">
           <div class="registro-group">
-            Rut<input type="text" name="rut" required> <br>
+            Rut<input type="text" name="rut" id="rutInput" required> 
+            
+            <div id="rutErrorMessage" class="error-message">{{rut_error}}</div>
+           
+            <br>
           </div>
 
         <div class="registro-group">
@@ -286,7 +290,7 @@
 
         <div class="dashboard-row">
         <div class="registro-group">
-          Fono: <input type="number" name="telefono" required> <br>
+          Fono: <input type="text" name="telefono" required> <br>
       </div>
 
       <div class="registro-group">
@@ -328,14 +332,64 @@
 
         </div>
 
-        {% if error %}
+        {% if messages %}
         <div class="error-message">
-            <h3 class="error-message">{{ error }}</h3>
-        {% endif %}
+          {% for message in messages %}
+            <h3 {% if message.tags %} class="{{message.tags}}"{% endif %}>{{message}}</h3>
+        {% endfor %}
         </div>
+        {% endif %}
     </form>
 </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+      // Función para validar el RUT en tiempo real
+      $('#rutInput').on('input', function () {
+          var rutValue = $(this).val();
+          var isValid = validarRut(rutValue);
+          
+          // Muestra el mensaje de error si el RUT no es válido
+          if (!isValid) {
+              $('#rutErrorMessage').text('El RUT ingresado no es válido');
+          } else {
+              $('#rutErrorMessage').text('');
+          }
+      });
+
+      // Función para validar el RUT
+      function validarRut(rut) {
+        rut = rut.replace(/[-.]/g, '').toUpperCase();
+
+if (!rut.slice(0, -1).match(/^\d+$/) || !/^[0-9K]$/.test(rut.slice(-1))) {
+    console.log("Error: No es un dígito o el dígito verificador no es 'K'");
+    return false;
+}
+
+const reversedDigits = Array.from(rut.slice(0, -1), Number).reverse();
+const factors = [2, 3, 4, 5, 6, 7, 2, 3, 4, 5, 6, 7];
+const sum = reversedDigits.reduce((acc, digit, index) => acc + digit * factors[index], 0);
+const expectedDigit = (11 - sum % 11) % 11;
+const expectedDigitChar = expectedDigit === 10 ? 'K' : expectedDigit.toString();
+
+console.log(`Valor esperado del dígito verificador: ${expectedDigitChar}`);
+console.log(`Dígito verificador ingresado: ${rut.slice(-1)}`);
+
+if (expectedDigitChar === rut.slice(-1)) {
+  $('#rutErrorMessage').text(''); 
+  console.log('RUT válido');
+        return true;
+    } else {
+      $('#rutErrorMessage').text('El RUT ingresado no es válido');
+      console.log('RUT no válido');
+        return false;
+    }
+      }
+  });
+</script>
    
 </body>
 </html>
