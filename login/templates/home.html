@@ -7,7 +7,7 @@
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+    
     <style type="text/css">
       
       body{
@@ -364,6 +364,10 @@
         <div class="registro-group">
           <label>Contacto:</label> <input type="text" name="contacto" value="{{usuario.contacto}}">
         </div>
+
+        <div class="registro-group">
+          <label>Correo Electrónico:</label> <input type="email" name="email" value="{{usuario.email}}">
+        </div>
         </div>
         
         <div class="dashboard-row-textarea">
@@ -384,10 +388,11 @@
 
   
         </div>
-  
+  </div>
       </form>
       </div>
   </div>
+</div>
   
       
       
@@ -411,15 +416,15 @@
 
         <div class="dashboard-row">
         <div class="registro-group">
-          <label>Rut:</label> <input type="text" name="rut" required>
+          <label>Rut:</label> <input type="text" name="rut" id="id_rut" required>
         </div>
     
       <div class="registro-group">
-        <label>Cliente:</label> <input type="text" name="cliente"  required>
+        <label>Cliente:</label> <input type="text" name="cliente" id="id_cliente" required>
       </div>
 
       <div class="registro-group">
-        <label>Fono:</label> <input type="number" name="fono"  required>
+        <label>Fono:</label> <input type="number" name="fono" id="id_fono" required>
       </div>
     </div>
 
@@ -427,23 +432,23 @@
 
     <div class="dashboard-row">
       <div class="registro-group">
-        <label>Dirección:</label> <input type="text" name="direccion"  required>
+        <label>Dirección:</label> <input type="text" name="direccion" id="id_direccion" required>
       </div>
     
     
       <div class="registro-group">
-        <label>Contacto:</label> <input type="text" name="contacto" required>
+        <label>Contacto:</label> <input type="text" name="contacto" id="contacto" required>
       </div>
 
       <div class="registro-group">
-        <label>Correo Electrónico:</label> <input type="email" name="email" required>
+        <label>Correo Electrónico:</label> <input type="email" name="email" id="email" required>
       </div>
     </div>
 
       <div class="dashboard-row-textarea">
       <div class="registro-group">
         <label>Descripción:</label>
-        <textarea  name="descripcion">
+        <textarea  name="descripcion" id="descripcion">
 
         </textarea>
       </div>
@@ -472,6 +477,8 @@
 
     {% endif %}
   </div>
+
+  
   
       
 
@@ -482,12 +489,45 @@
       {% endblock %}
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
- 
+$(document).ready(function () {
+        // Agrega un evento onchange al campo de entrada del Rut
+        $('#id_rut').on('change', function () {
+            var rut = $(this).val();
+
+            // Realiza una solicitud AJAX para verificar el Rut
+            $.ajax({
+                url: '{% url "verificar_rut" %}',
+                data: { 'rut': rut },
+                dataType: 'json',
+                success: function (data) {
+                  console.log(data); 
+                    if (data.usuario_encontrado) {
+                        // Muestra la información del usuario
+                        var infoUsuario = data.info_usuario;
+                        var infoContainer = $('#info-usuario-container');
+                        infoContainer.html(`
+                            <p>Rut: ${infoUsuario.rut}</p>
+                            <p>Cliente: ${infoUsuario.cliente}</p>
+                            <p>Fono: ${infoUsuario.fono}</p>
+                            <p>Dirección: ${infoUsuario.direccion}</p>
+                            <p>Contacto: ${infoUsuario.contacto}</p>
+                            <p>Correo Electrónico: ${infoUsuario.mail}</p>
+                            <p>Descripción: ${infoUsuario.descripcion}</p>
+                        `);
+                    } else {
+                        // Borra la información del usuario si no se encuentra
+                        $('#info-usuario-container').html('');
+                    }
+                }
+            });
+        });
+    });
+</script>
       
- 
-  </script>
-   
+
+
 
 
       

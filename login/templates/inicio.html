@@ -124,6 +124,9 @@
         transition: transform 0.3s ease-in-out;
         overflow:hidden;
         text-align: center;
+        display: flex;
+        flex-direction:column;
+        align-items: center;
       }
 
       .dashboard-item:hover {
@@ -301,8 +304,9 @@
 
 .user{
   color:#fff;
-  margin-right: 15px;
+  margin-right: 650px;
   font-size: 16px;
+  margin-left: 8px;
 }
 
 .container-total-ot{
@@ -310,9 +314,10 @@
 }
 
 .total-registros-usuario{
-  margin-left: 20px;
+  margin-left: 8px;
   color: #fff;
   font-size: 16px;
+  margin-right: 100px;
   
 }
 
@@ -322,8 +327,20 @@
 }
 
 .fecha-ultimo-registro{
-  padding-right: 20px;
+  margin-left: 8px;
 }
+
+.title{
+  color: #333;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    border-bottom: 5px solid #0b1e5e;
+    display: inline-block;
+}
+
+
+
+
 
 
 
@@ -341,14 +358,22 @@
     {% if nombre and apellido %}
     <i class='bx bx-user-circle'></i>
     <p class="user">{{nombre}} {{apellido}}</p>
-    
+        {% if user.userprofile.foto %}
+            <img src="{{ user.userprofile.foto.url }}" alt="Foto de perfil">
+        {% endif %}
+    </div>
     {% endif%}
+
+    <i class='bx bx-bar-chart-alt-2'></i>
     <div class="total-registros-info">
     {% if total_registros_usuario %}
         <p class="total-registros-usuario">Total de Registros: {{ total_registros_usuario }}</p>
 {% endif %}
 </div>
 
+
+
+<i class='bx bx-time'></i>
 <div class="registro-info">
   {% if fecha_ultimo_registro %}
       <p class="fecha-ultimo-registro">Último Registro: {{ fecha_ultimo_registro|date:"d/m/Y" }}</p>
@@ -398,7 +423,7 @@
 
          <div class="dashboard-item dark-card">
             <i class="fas fa-database fa-2x"></i>
-            <h2>Total de OT</h2>
+            <h2 class="title">Total de OT</h2>
             <p>{{ total_registros_count }}</p>
          </div>
 
@@ -406,7 +431,7 @@
          <div class="dashboard-row">
          <div class="dashboard-item usuarios">
             <i class="fas fa-trophy fa-2x"></i>
-            <h2>Usuario con más Registros</h2>
+            <h2 class="title">Usuario con más Registros</h2>
             {% if trabajador_con_mas_registros %}
                 <p>Usuario: {{trabajador_con_mas_registros.user__username }}</p>
                 <p>Número de Registros: {{trabajador_con_mas_registros.registros }}</p>
@@ -418,7 +443,7 @@
             
          <div class="dashboard-item usuarios">
             <i class="fas fa-long-arrow-alt-down fa-2x"></i>
-            <h2>Usuario con menos Registros</h2>
+            <h2 class="title">Usuario con menos Registros</h2>
                 <p>Usuario: {{registros_menos_por_mes.user__username }}</p>
                 <p>Número de Registros: {{registros_menos_por_mes.registros}}</p>
          </div>
@@ -427,7 +452,7 @@
          <div class="dashboard-row">
          <div class="dashboard-item ultimos">
             <i class="fas fa-users fa-2x"></i>
-            <h2>Últimos Usuarios Registrados</h2>
+            <h2 class="title">Últimos Usuarios Registrados</h2>
             <ul>
             {% for usuario in usuarios_registrados %}
             <li class="liultimos"> {{usuario}}</li>
@@ -436,7 +461,7 @@
         </div>
 
          <div class="dashboard-item grafico">
-            <h2>Registros por Mes</h2>
+            <h2 class="title">Registros por Mes</h2>
             <canvas id="regPorMesChart" width="400" height="200"></canvas>
          </div>
 

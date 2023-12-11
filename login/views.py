@@ -306,15 +306,20 @@ def editar(request):
     if request.method != 'POST':
         return HttpResponseBadRequest("Método no permitido")
 
-    cliente= request.POST["cliente"]
+    
     rut= request.POST["rut"]
+    cliente= request.POST["cliente"]
     direccion= request.POST["direccion"]
     fono= request.POST["fono"]
+    contacto=request.POST["contacto"]
+    mail=request.POST["mail"]
     descripcion= request.POST["descripcion"]
     id= request.POST["id"]
-    Formulario.objects.filter(pk=id).update(id=id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion)
+    Formulario.objects.filter(pk=id).update(id=id,cliente=cliente,rut=rut,direccion=direccion,fono=fono,descripcion=descripcion,contacto=contacto,mail=mail)
     messages.success(request, 'Registro actualizado')
     return redirect('listado')
+
+
 @login_required
 def eliminar(request, id):
     registro = Formulario.objects.filter(pk=id)
@@ -327,6 +332,16 @@ def inicio(request):
     today = timezone.now().date()
 
     usuarios_registrados= User.objects.all().order_by('-date_joined')[:5]
+    usuarios_con_fotos = []
+
+    for usuario in usuarios_registrados:
+        try:
+            user_profile = UserProfile.objects.get(user=usuario)
+            foto_url = user_profile.foto.url if user_profile.foto else None
+        except UserProfile.DoesNotExist:
+            foto_url = None
+        usuarios_con_fotos.append({'usuario': usuario, 'foto_url': foto_url})
+
 
 
 
@@ -398,4 +413,22 @@ def inicio(request):
         
     })
 
+def verificar_rut(request):
+    rut = request.GET.get('rut', '')
+    usuario_encontrado = Formulario.objects.filter(rut=rut).first()
+
+    if usuario_encontrado:
+        info_usuario = {
+            'rut': usuario_encontrado.rut,
+            'cliente': usuario_encontrado.cliente,
+            'fono': usuario_encontrado.fono,
+            'direccion': usuario_encontrado.direccion,
+            'contacto': usuario_encontrado.contacto,
+            'mail': usuario_encontrado.mail,
+            'descripcion': usuario_encontrado.descripcion,
+        }
+    else:
+        info_usuario = {}
+
+    return JsonResponse({'usuario_encontrado': bool(usuario_encontrado), 'info_usuario': info_usuario})
 

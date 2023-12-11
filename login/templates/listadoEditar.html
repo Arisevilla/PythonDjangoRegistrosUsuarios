@@ -197,43 +197,66 @@
 
       {%block content %}
       
-        {% csrf_token %}
+        
         <div class="container-form">
+          <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="{% url 'editar' %}">
+            {% csrf_token %}
+          
+
         <div class="title-registro">
-          <div class="empresa-orden">
-            <i class='bx bxl-magento'></i> 
-          <h2>Magento</h2>
-        </div>
-          <h4 class="text-center">Orden de trabajo</h4><br>
-        </div>
+      <div class="dashboard-row">
+        {% if nombre and apellido %}
+        <p class="user">{{nombre}} {{apellido}}</p>
+      {% endif%}
+      <div class="empresa-orden">
+        <i class='bx bxl-magento'></i> 
+        <h2>Magento</h2>
+      </div>
+      <h4 class="text-center">Nro. OT: {% if nuevo_id %}{{ nuevo_id }}{% endif %}</h4>
+
+      
+    </div>
+    </div>
 
         
-        <form class="w-50 shadow mx-auto p-4 m-3" method="post" action="{% url 'editar' %}">
-          {% csrf_token %}
+        
+    
         <input type="hidden" name="id" value="{{registro.id}}">
-
+        <div class="dashboard-row">
         <div class="registro-group">
-       <label> Cliente:</label> <input type="text" name="cliente" class="form-control" required value="{{registro.cliente}}">
+       <label> Rut:</label> <input type="text" name="rut" class="form-control" required value="{{registro.rut}}">
+        </div>
+        <div class="registro-group">
+        <label>Cliente:</label> <input type="text" name="cliente" class="form-control" required value="{{registro.cliente}}">
+        </div>
+        <div class="registro-group">
+          <label>Fono:</label> <input type="number" name="fono" class="form-control" required value="{{registro.fono}}">
+          </div>
         </div>
 
-        <div class="registro-group">
-        <label>Rut:</label> <input type="text" name="rut" class="form-control" required value="{{registro.rut}}">
-        </div>
-
+        <div class="dashboard-row">
         <div class="registro-group">
         <label>Dirección:</label> <input type="text" name="direccion" class="form-control" required value="{{registro.direccion}}">
         </div>
 
         <div class="registro-group">
-        <label>Fono:</label> <input type="number" name="fono" class="form-control" required value="{{registro.fono}}">
+        <label>Contacto:</label> <input type="text" name="contacto" class="form-control" required value="{{registro.contacto}}">
         </div>
 
+        <div class="registro-group">
+          <label>Correo Electrónico:</label> <input type="email" name="mail" class="form-control" required value="{{registro.mail}}">
+          </div>
+      </div>
+
+
+      <div class="dashboard-row-textarea">
         <div class="registro-group">
         <label>Descripción:</label>
         <textarea  name="descripcion">
             {{registro.descripcion}}
         </textarea>
         </div>
+      </div>
 
         <div class="botones">
 
@@ -243,6 +266,7 @@
 
         <div class="link-login">
         <a href="../salir/">Logout</a>
+      </div>
       </div>
 
       </form>
