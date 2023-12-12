@@ -159,6 +159,7 @@ def listado(request):
             user_profile= UserProfile.objects.get(user=request.user)
             nombre= user_profile.nombre
             apellido= user_profile.apellido
+            
         except UserProfile.DoesNotExist:
             pass
 
@@ -178,12 +179,17 @@ def listado(request):
                     registros= registros.filter(Q(**{campo:fecha_busqueda}))
                 except ValueError:
                     messages.error(request, 'Formato de fecha no válida')
-                    
             else:
-                registros= registros.filter(
-                Q(**{f'{campo}__icontains':valor})
-            )
-
+                if campo == 'user__username':
+                    print(f"Filtrando por username: {valor}")
+                    registros = registros.filter(user__username__icontains=valor)   
+                    print(f"Número de registros después de las consultas: {registros.count()}") 
+                    
+                else:
+                    registros= registros.filter(
+                    Q(**{f'{campo}__icontains':valor})
+                )
+    print(f"Campo: {campo}, Valor: {valor}, Campo2: {campo2}, Valor2: {valor2}")
     if campo2 in campos_permitidos and valor2:
         if campo2 == 'fecha':
                 try:
@@ -194,7 +200,8 @@ def listado(request):
         else:
             registros=registros.filter(
                 Q(**{f'{campo2}__icontains': valor2})
-         )
+            )
+    print(f"Consulta SQL: {registros.query}")
 
     if direccion== 'asc':
         registros= registros.order_by(orden)

@@ -29,6 +29,7 @@
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
         position:relative;
+        padding-right: 30px;
       }
 
       .navbar:hover{
@@ -71,6 +72,7 @@
         margin-right: 10px;
         color: #fff;
         font-size:20px;
+        
       }
 
       .navbar ul a{
@@ -112,7 +114,7 @@
         display: flex;
         min-height: 100vh;
         margin: 0;
-        gap: 30px;
+        
         font-family:Arial;
         margin-top:80px;
 
@@ -129,8 +131,8 @@
       }
 
       .dashboard-item{
-        flex:0 0 calc(33.33% -40px);
-        margin:20px;
+        flex:0 0 calc(50% -20px);
+        margin:10px;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -142,6 +144,13 @@
         flex-direction:column;
         align-items: center;
       }
+
+      .dashboard-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
 
       .dashboard-item:hover {
       transform: scale(1.05);
@@ -194,7 +203,10 @@
         font-size: 16px;
 }
 
-.dark-card {
+.dark-card,
+.usuarios,
+.ultimos,
+grafico{
     background-color: #333;  
     color: #fff;
     border-radius: 10px;  
@@ -202,16 +214,28 @@
     
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
     transition: background-color 0.3s ease-in-out;  
-    height: 100px;
-    width: 300px;
-}
-.dark-card h2 {
-    color: #fff;
 }
 
-.dark-card p{
-    color: #fff;
-}
+.dark-card:hover,
+    .usuarios:hover,
+    .ultimos:hover,
+    .grafico:hover {
+        background-color: #555;
+    }
+
+.dark-card h2,
+    .usuarios h2,
+    .ultimos h2,
+    .grafico h2 {
+        color: #fff;
+    }
+
+    .dark-card p,
+    .usuarios p,
+    .ultimos .liultimos {
+        color: #fff;
+    }
+
 
 .dark-card:hover {
     background-color: #555;  

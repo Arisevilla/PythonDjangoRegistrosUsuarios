@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Informe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -14,6 +14,10 @@
         margin:0;
         height: 100vh;
         
+      }
+
+      body.navbar-open {
+        overflow: hidden;
       }
 
       .container-listado{
@@ -125,23 +129,27 @@
       .table{
        display:flex;
        flex-direction:column;
-       min-width: 100%;
+       width: 90%;
        border-collapse:collapse;
        margin-top: 10px;
-       table-layout: fixed;
+       table-layout: fixed; 
+       margin: 20px auto;
       }
+
       .table thead {
-    white-space: nowrap;
+      white-space: nowrap;
 }
 
       .table th,
       .table td{
-        border:1px solid #ddd;
+        border:none;
+        border-bottom: 1px solid #ddd;
         padding: 10px;
         text-align: center;
         word-wrap: break-word;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 14px;
       }
 
       .table th a{
@@ -151,6 +159,12 @@
         display: inline-block;
         vertical-align: middle;
         
+      }
+
+      .table th {
+        background-color: #f8f9fa;
+        color: #555;
+  
       }
 
 
@@ -193,17 +207,35 @@
         display: flex;
         align-items: center;
         margin-bottom: 10px;
+        justify-content: center;
+        width: 90%;
       }
 
       .search-form select,
-      .search-form input{
+      .search-form input
+      .search-form button{
         margin-right: 10px;
-        padding: 8px;
+        padding: 2px;
+        font-size: 14px;
+        border:1px solid #ccc;
+        border-radius: 3px;
+        margin-right: 10px;
       }
 
       .search-form button{
-        padding:8px;
+        cursor:pointer;
+        transition: background-color 0.3s ease;
       }
+
+      .search-form input{
+        margin-right: 0;
+      }
+
+      .search-form select{
+        margin-left: 5px;
+      }
+
+
 
       .btn{
         padding:8px 16px;
@@ -215,36 +247,96 @@
       .btn-primary{
         background-color:#007bff ;
         color: #fff;
-        margin-right: 10px;
+        margin-right: 5px;
+        margin-left: 10px;
       }
 
-      .btn-secondry{
-        background-color:#6c757d ;
-        color:#fff;
-      }
+      
       .pagination {
-   display: flex;
-   justify-content: center;
-   margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.step-links a {
-   padding: 8px;
-   margin: 0 4px;
-   text-decoration: none;
-   color: #007bff;
-}
-
+.step-links a,
 .current {
-   padding: 8px;
-   margin: 0 4px;
-   font-weight: bold;
+    padding: 6px;
+    margin: 0 2px;
+    font-size: 12px;
+    text-decoration: none;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
 }
+
+.step-links a:hover{
+  background-color: #007bff;
+  color:#fff;
+}
+
+.current{
+  background-color: #007bff;
+  color:#fff;
+}
+
+
 
 .table-dark a{
   color:#fff
   
 }
+
+.search-form button.show-all-btn {
+  padding:8px 16px;
+  background-color: gray;
+  color: #fff;
+  border:none;
+  cursor:pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.search-form button.show-all-btn a{
+  text-decoration: none;
+  color:#fff;
+}
+
+select{
+  appearance: none;
+  -webkit-appearance:auto;
+  -moz-appearance: none;
+  text-indent:1px;
+  text-overflow:'';
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+select:hover{
+  border-color: #aaa;
+}
+
+select:focus{
+  outline:none;
+  box-shadow: 0 0 5px rgba(0,123,255,0.7);
+}
+
+select::after{
+  content:'\25BC';
+  position:absolute;
+  top:50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+select option:checked{
+  background-color: #ddd;
+}
+
+
 
 
   
@@ -283,6 +375,7 @@
   <form method="GET" action="{% url 'listado' %}" class="search-form">
     <select name="campo">
       <option value="id" {% if campo == 'id' %}selected{% endif %}>ID</option>
+      <option value="user__username"{% if campo == 'user__username' %}selected{% endif %}>Trabajador</option>
       <option value="cliente"{% if campo == 'cliente' %}selected{% endif %}>Cliente</option>
       <option value="fecha"{% if campo == 'fecha' %}selected{% endif %}>Fecha</option>
       <option value="rut"{% if campo == 'rut' %}selected{% endif %}>Rut</option>
@@ -296,6 +389,7 @@
     <select name="campo2">
   
       <option value="id" {% if campo2 == 'id' %}selected{% endif %}>ID</option>
+      <option value="user__username"{% if campo2 == 'user__username' %}selected{% endif %}>Trabajador</option>
       <option value="cliente"{% if campo2 == 'cliente' %}selected{% endif %}>Cliente</option>
       <option value="fecha"{% if campo2 == 'fecha' %}selected{% endif %}>Fecha</option>
       <option value="rut"{% if campo2 == 'rut' %}selected{% endif %}>Rut</option>
@@ -309,7 +403,7 @@
 
 
     <button type="submit" class="btn btn-primary">Buscar</button>
-    <button><a href="{% url 'listado' %}" class="btn btn-secondry">Mostrar todo</a></button>
+    <button class="btn btn-primary show-all-btn"><a href="{% url 'listado' %}" >Mostrar todo</a></button>
   </form>
 
 
@@ -365,8 +459,8 @@
 <div class="pagination">
   <span class="step-links">
      {% if registros.has_previous %}
-        <a href="?campo={{ campo }}&valor={{ valor }}&page=1">&laquo; first</a>
-        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.previous_page_number }}">previous</a>
+        <a href="?campo={{ campo }}&valor={{ valor }}&page=1">&laquo; primero</a>
+        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.previous_page_number }}">anterior</a>
      {% endif %}
 
      <span class="current">
@@ -374,8 +468,8 @@
      </span>
 
      {% if registros.has_next %}
-        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.next_page_number }}">next</a>
-        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.paginator.num_pages }}">last &raquo;</a>
+        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.next_page_number }}">siguiente</a>
+        <a href="?campo={{ campo }}&valor={{ valor }}&page={{ registros.paginator.num_pages }}">último &raquo;</a>
      {% endif %}
   </span>
 </div>
