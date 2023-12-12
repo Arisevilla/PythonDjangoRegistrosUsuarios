@@ -131,7 +131,7 @@
       }
 
       .dashboard-item{
-        flex:0 0 calc(50% -20px);
+        flex:0 0 calc(33.33% -20px);
         margin:10px;
         padding: 20px;
         border-radius: 10px;
@@ -145,16 +145,19 @@
         align-items: center;
       }
 
+
       .dashboard-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    
+  
 }
 
       .dashboard-item:hover {
       transform: scale(1.05);
      }
+
      .total-ot-container {
     display: flex;
     align-items: center;
@@ -178,7 +181,8 @@
       .dashboard-item p {
         color:#555;
         margin: 0;
-        font-size: 20px;
+        font-size: 17px;
+        font-family: 'Times New Roman', Times, serif;
         
       }
 
@@ -204,16 +208,32 @@
 }
 
 .dark-card,
-.usuarios,
-.ultimos,
-grafico{
+.usuarios{
     background-color: #333;  
     color: #fff;
     border-radius: 10px;  
     padding: 20px; 
-    
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-    transition: background-color 0.3s ease-in-out;  
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px; 
+    height: 150px; 
+    transition: background-color 0.3s ease-in-out; 
+    font-size: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.ultimos,
+.grafico{
+  background-color: #353434;  
+    color: #fff;
+    border-radius: 10px;  
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease-in-out; 
+    font-size: 13px;
+    height: 250px;
+    width: 400px;
+
+
 }
 
 .dark-card:hover,
@@ -234,23 +254,15 @@ grafico{
     .usuarios p,
     .ultimos .liultimos {
         color: #fff;
+        
     }
+
 
 
 .dark-card:hover {
     background-color: #555;  
 }
 
-.usuarios{
-    background-color: #333;  
-    color: #fff;
-    border-radius: 10px;  
-    padding: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-    transition: background-color 0.3s ease-in-out;  
-    height: 200px;
-    width: 400px;
-}
 
 .usuarios h2 {
     color: #fff;
@@ -264,15 +276,7 @@ grafico{
     background-color: #555;  
 }
 
-.ultimos{
-    background-color: #333;  
-    color: #fff;
-    border-radius: 10px;  
-    padding: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-    transition: background-color 0.3s ease-in-out; 
-    width: 400px;
-}
+
 
 .ultimos h2 {
     color: #fff;
@@ -289,13 +293,6 @@ grafico{
     background-color: #555;  
 }
 
-.dashboard-row{
-    display:flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    
-}
-
 .dashboard-item{
     flex: 0 0 calc(50% -20px);
     margin:10px;
@@ -308,16 +305,6 @@ grafico{
     align-items: center;
 }
 
-.grafico{
-    background-color: #333;  
-    color: #fff;
-    border-radius: 10px;  
-    padding: 20px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
-    transition: background-color 0.3s ease-in-out; 
-    width: 400px;
-
-}
 
 .grafico h2{
     color: #fff;
@@ -372,7 +359,7 @@ grafico{
   color: #333;
     margin-bottom: 10px;
     font-size: 1.5em;
-    border-bottom: 5px solid #0b1e5e;
+    border-bottom: 3px solid #e4e6ec;
     display: inline-block;
 }
 
@@ -472,15 +459,15 @@ grafico{
           
 
         
-
-         <div class="dashboard-item dark-card">
+          <div class="dashboard-row">
+         <div class="dashboard-item usuarios">
             <i class="fas fa-database fa-2x"></i>
             <h2 class="title">Total de OT</h2>
             <p>{{ total_registros_count }}</p>
          </div>
 
          
-         <div class="dashboard-row">
+        
          <div class="dashboard-item usuarios">
             <i class="fas fa-trophy fa-2x"></i>
             <h2 class="title">Usuario con más Registros</h2>

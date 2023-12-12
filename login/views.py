@@ -169,6 +169,8 @@ def listado(request):
     valor2= request.GET.get('valor2','')
     orden = request.GET.get('orden', 'id')
     direccion = request.GET.get('direccion','asc')
+    fecha_inicio = request.GET.get('fecha_inicio', '')
+    fecha_fin = request.GET.get('fecha_fin', '')
 
     campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono','mail','contacto','user.username']
 
@@ -201,7 +203,17 @@ def listado(request):
             registros=registros.filter(
                 Q(**{f'{campo2}__icontains': valor2})
             )
+
+    #rango de fechas
+    if fecha_inicio and fecha_fin:
+        try:
+            fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+            fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+            registros = registros.filter(fecha__range=(fecha_inicio, fecha_fin))
+        except ValueError:
+            messages.error(request, 'Formato de fecha no válida')
     print(f"Consulta SQL: {registros.query}")
+  
 
     if direccion== 'asc':
         registros= registros.order_by(orden)

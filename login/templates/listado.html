@@ -164,6 +164,9 @@
       .table th {
         background-color: #f8f9fa;
         color: #555;
+        position: sticky;
+        top: 0;
+        z-index: 2;
   
       }
 
@@ -336,6 +339,19 @@ select option:checked{
   background-color: #ddd;
 }
 
+.search-form label{
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.search-form input[type="date"]{
+  padding: 2px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+
 
 
 
@@ -384,6 +400,9 @@ select option:checked{
       <option value="contacto"{% if campo == 'contacto' %}selected{% endif %}>Contacto</option>
       <option value="mail"{% if campo == 'mail' %}selected{% endif %}>Email</option>
     </select>
+
+  
+
     
     <input type="text" name="valor" placeholder="Buscar" value="{{ valor }}">
     <select name="campo2">
@@ -400,6 +419,14 @@ select option:checked{
   </select>
 
   <input type="text" name="valor2" placeholder="Buscar segundo campo" value="{{ valor2 }}">
+
+
+  <label for="fecha_inicio"></label>
+    <input type="date" name="fecha_inicio" value="{{ fecha_inicio }}">
+
+    <!-- Campo de fecha de fin -->
+    <label for="fecha_fin"></label>
+    <input type="date" name="fecha_fin" value="{{ fecha_fin }}">
 
 
     <button type="submit" class="btn btn-primary">Buscar</button>
@@ -484,4 +511,20 @@ select option:checked{
 </div>
 </div>
 
+
+
+<script>
+  // JavaScript para mostrar/ocultar campos de fecha
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleDateFilterButton = document.getElementById('toggle-date-filter');
+    const fechaInicioInput = document.querySelector('input[name="valor"]');
+    const fechaFinInput = document.querySelector('input[name="valor2"]');
+
+    toggleDateFilterButton.addEventListener('click', function () {
+      // Cambia la visibilidad de los campos de fecha al hacer clic en el botón
+      fechaInicioInput.style.display = fechaInicioInput.style.display === 'none' ? 'inline-block' : 'none';
+      fechaFinInput.style.display = fechaFinInput.style.display === 'none' ? 'inline-block' : 'none';
+    });
+  });
+</script>
 </body>
