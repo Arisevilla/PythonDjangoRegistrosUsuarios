@@ -519,12 +519,21 @@
         var registrosPorMesData = {
            labels: labels,
            datasets: [{
-              label: 'Registros por Mes',
+              label: 'Usuario con mayor registros',
               data:JSON.parse('{{ data | safe}}'),
               backgroundColor: 'rgba(75, 192, 192, 0.2)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1
-           }]
+           },
+           {
+                label: 'Total de Registros',
+                data: [{{ total_registros_count }}],  // Agrega el total de registros aquí
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+            },
+          
+          ]
         };
   
         var regPorMesChart = new Chart(document.getElementById('regPorMesChart'), {
