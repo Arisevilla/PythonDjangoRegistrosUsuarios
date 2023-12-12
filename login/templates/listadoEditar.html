@@ -22,21 +22,34 @@
         margin:0;
         font-family:Arial;
         gap: 30px;
-        
+      
       }
 
       .title-registro{
-        text-align: left;
+        text-align: center;
         color: #31303D;
         margin-bottom:20px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         }
 
-      .title-registro h2{
-      margin:0;
-      }
+        
 
-      .registro-group{
+      .title-registro h2{
+        margin:0;
+      }
+        .registro-group{
           margin-bottom:15px;
+          flex:1;
+            margin-right: 10px;
+            flex: 0 0 calc(33.33% - 10px);
+            
+        }
+
+        .registro-group textarea{
+          width: 700px;
+          height: 100px;
         }
 
         .registro-group input, textarea{
@@ -46,7 +59,6 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
         .botones{
             display: flex;
             justify-content: space-between;
@@ -68,8 +80,47 @@
             text-decoration: none;
         }
 
+        .container-form{
+            display: flex;
+            flex-wrap: wrap;
+            width: 800px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin-top: 50px;
+            
+        }
+
+        .container-busqueda{
+        width: 100%; 
+        margin-bottom: 20px;
+        }
+
+        .boton-buscar input{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color:blue;
+            color:#fff;
+            cursor:pointer;
+        }
+      .boton-buscar input[type="submit"] {
+      padding: 8px 12px; 
+      font-size: 12px; 
+      width: 70px;
+    }
+
+       
 
 
+      
+
+
+    
       .navbar {
         display:flex;
         flex-direction: column;
@@ -81,12 +132,22 @@
         padding:20px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
-        border-top-right-radius: 5px;
         position: relative;
       }
 
       .navbar:hover{
         width: 200px;
+      }
+
+      .link-login{
+        position: absolute;
+        bottom:20px;
+        left:10px;
+        color: #fff;
+        text-decoration:none;
+        margin-right: 10px;
+        color:#fff;
+        font-size: 20px;
       }
 
       .navbar ul{
@@ -127,17 +188,6 @@
 
       }
 
-      .link-login{
-        position: absolute;
-        bottom:20px;
-        left:10px;
-        color: #fff;
-        text-decoration:none;
-        margin-right: 10px;
-        color:#fff;
-        font-size: 20px;
-      }
-
 
       .navbar a{
         color: white;
@@ -175,14 +225,10 @@
 
       }
 
-      .container-form{
-            max-width: 400px;
-            width: 100%;
-            margin: auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      .error-message{
+            color: blue;
+            text-align: center;
+            margin-top: 10px;
         }
 
         .registro-group label{
@@ -190,6 +236,48 @@
           text-align: left;
           margin-bottom: 5px;
         }
+
+        .user{
+          color:#31303D;
+          font-size: 18px;
+          font-weight: bold;
+          margin-top:10px;
+        }
+
+        .dashboard-row{
+      display:flex;
+      justify-content: space-between;
+      margin-top: 20px;
+}
+
+    .formulario{
+      
+      width: 100%;
+      
+      gap:10px
+    }
+
+  .dashboard-row-textarea{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    }
+
+    .text-center{
+      padding-right: 30px;
+    }
+
+    .user{
+      padding-top: 50px;
+    }
+
+    .dashboard-rut{
+      display:flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-left: 450px;
+}
 
 
 

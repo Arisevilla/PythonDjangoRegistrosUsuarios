@@ -397,6 +397,11 @@
     {% if nombre and apellido %}
     <i class='bx bx-user-circle'></i>
     <p class="user">{{nombre}} {{apellido}}</p>
+    
+        {% if user.is_staff %}
+            <p class="user">Administrador</p>
+        {% endif %}
+
         {% if user.userprofile.foto %}
             <img src="{{ user.userprofile.foto.url }}" alt="Foto de perfil">
         {% endif %}
