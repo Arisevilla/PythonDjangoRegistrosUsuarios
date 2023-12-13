@@ -72,6 +72,11 @@ def registro(request):
             direccio= request.POST["direccio"]
             rut=request.POST["rut"]
 
+            if User.objects.filter(Q(username=name) | Q(email=email)).exists() or Formulario.objects.filter(rut=rut).exists():
+                messages.error(request, 'El RUT, el correo o el usuario ya existen.')
+                return render(request, "registro.html", {'form': UserCreationForm, 'rut_error': 'Error en el RUT'})
+
+
             if len(telefono) !=9:
                 messages.error(request,'El teléfono debe tener 9 dígitos')
                 return redirect('registro')
@@ -87,6 +92,7 @@ def registro(request):
             
             user.save()
             user_profile.save()
+            messages.success(request, 'Usuario registrado exitosamente.')
             return render(request, "registro.html", {'form' : UserCreationForm, 'error': "Usuario registrado"})
         
 def validar_rut(rut):
@@ -321,7 +327,8 @@ def guardar(request):
         return render(request, 'home.html', {'usuario': usuario_existente})
     else:
         formulario_id =AtomicCounter.increment_and_get()
-        r= Formulario(id=formulario_id, cliente=cliente, rut=rut,direccion=direccion, fono=fono,descripcion=descripcion, contacto=contacto, user=request.user,mail=mail)
+        fecha_actual = datetime.now()
+        r= Formulario(id=formulario_id, cliente=cliente, rut=rut,direccion=direccion, fono=fono,descripcion=descripcion, contacto=contacto, user=request.user,mail=mail,fecha=fecha_actual)
         r.save()
         messages.success(request,'Registro agregado')
         return redirect('listado')
