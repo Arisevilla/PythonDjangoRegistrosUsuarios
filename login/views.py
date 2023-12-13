@@ -22,6 +22,8 @@ from django.utils import timezone
 from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_protect
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
 
 
 
@@ -482,4 +484,5 @@ def verificar_existencia_usuario(request):
     correo_existente = User.objects.filter(email=email).exists()
 
     return JsonResponse({'usuario_existente': usuario_existente, 'rut_existente': rut_existente, 'correo_existente': correo_existente})
+
 

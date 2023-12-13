@@ -76,6 +76,16 @@
             cursor:pointer;
         }
 
+        .boton-limpiar input{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color:blue;
+            color:#fff;
+            cursor:pointer;
+        }
+
         .link-login a{
             color:#007bff;
             text-decoration: none;
@@ -114,7 +124,15 @@
       font-size: 12px; 
       width: 70px;
     }
-
+.boton-limpiar button{
+  padding:8px 16px;
+  background-color: gray;
+  color: #fff;
+  border:none;
+  cursor:pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
        
 
 
@@ -362,11 +380,11 @@
             
           </div>
           <div class="registro-group">
-            <label>Rut:</label> <input type="text" name="rut"  value="{{usuario.rut}}">
+            <label>Rut Cliente:</label> <input type="text" name="rut"  value="{{usuario.rut}}">
           </div>
       
         <div class="registro-group">
-          <label>Cliente:</label> <input type="text" name="cliente"  value="{{usuario.cliente}}">
+          <label>Nombre Cliente:</label> <input type="text" name="cliente"  value="{{usuario.cliente}}">
         </div>
       </div>
   
@@ -434,12 +452,12 @@
 
         <div class="dashboard-row">
         <div class="registro-group">
-          <label>Rut:</label> <input type="text" name="rut" id="id_rut" required>
+          <label>Rut Cliente:</label> <input type="text" name="rut" id="id_rut" required>
           <span id="rutErrorMessage" class="error-message">{{rut_error}}</span>
         </div>
     
       <div class="registro-group">
-        <label>Cliente:</label> <input type="text" name="cliente" id="id_cliente" required>
+        <label>Nombre Cliente:</label> <input type="text" name="cliente" id="id_cliente" required>
       </div>
 
       <div class="registro-group">
@@ -478,6 +496,10 @@
 
       <div class="boton-guardar">
         <input type="submit" value="Guardar" > <br>
+      </div>
+
+      <div class="boton-limpiar">
+        <button type="button" onclick="limpiarFormulario()">Limpiar</button>
       </div>
 
       </div>
@@ -595,6 +617,30 @@ if (expectedDigitChar === rut.slice(-1)) {
     }
       }
   });
+
+
+
+
+
+
+  function limpiarFormulario() {
+    // Obtén todos los elementos de entrada del formulario
+    var elementosFormulario = document.querySelectorAll('.formulario input, .formulario textarea');
+
+    // Recorre los elementos y restablece su valor
+    elementosFormulario.forEach(function(elemento) {
+      if (elemento.type !== 'submit') {
+        elemento.value = '';
+      }
+    });
+
+    // Restablece el valor del token CSRF
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    $('input[name="csrfmiddlewaretoken"]').val(csrfToken);
+
+    // También puedes limpiar el mensaje de error si lo hay
+    $('#rutErrorMessage').text('');
+  }
 </script>
       
 

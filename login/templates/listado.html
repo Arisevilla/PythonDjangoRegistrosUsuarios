@@ -131,8 +131,7 @@
        flex-direction:column;
        width: 90%;
        border-collapse:collapse;
-       margin-top: 10px;
-       table-layout: fixed; 
+       margin-top: 10px; 
        margin: 20px auto;
       }
 
@@ -353,6 +352,43 @@ select option:checked{
 
 
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
 
 
 
@@ -439,32 +475,28 @@ select option:checked{
 
 <table class="table table-light w-75 mx-auto text-center ">
     <tr class="table-dark w-75">
-        <th>ID<a href="{{ url_ordenacion_asc }}"> </a></th>
-        <th>Trabajador<a href="{{ url_ordenacion_asc }}"> </a></th>
+        <th>OT<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Cliente<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Fecha<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Rut<a href="{{ url_ordenacion_asc }}"> </a></th>
-        <th>Dirección<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Fono<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Mail<a href="{{ url_ordenacion_asc }}"> </a></th>
-        <th>Contacto<a href="{{ url_ordenacion_asc }}"> </a></th>
-        <th>Descripción<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Acciones</th>
     </tr>
 {% for registro in registros %}
 <div class="table-row">
     <tr>
     <td>{{registro.id}}</td>
-    <td>{{ registro.user.userprofile.nombre }}</td>
     <td class="cliente-color">{{registro.cliente}}</td>
     <td>{{registro.fecha|date:"d/m/Y"}}</td>
     <td>{{registro.rut}}</td>
-    <td>{{registro.direccion}}</td>
     <td>{{registro.fono}}</td>
     <td>{{registro.mail}}</td>
-    <td>{{registro.contacto}}</td>
-    <td>{{registro.descripcion}}</td>
+
+    
+    
     <td class="actions">
+
     <form action="{% url 'detalle' registro.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-warning">
@@ -481,6 +513,12 @@ select option:checked{
 </tr>
 </div>
     {% endfor %}
+
+    <div id="detalleModal" class="modal">
+      <div class="modal-content">
+          <span class="close" onclick="cerrarModal()">&times;</span>
+          <div id="detallesContainer"></div>
+      </div>
   
 </table>
 
@@ -527,5 +565,11 @@ select option:checked{
       fechaFinInput.style.display = fechaFinInput.style.display === 'none' ? 'inline-block' : 'none';
     });
   });
+
+
+
+
+
+  
 </script>
 </body>
