@@ -117,8 +117,6 @@
         
         font-family:Arial;
         margin-top:80px;
-
-        
       }
 
       .dashboard{
@@ -126,6 +124,7 @@
         justify-content:space-around;
         display: flex;
         padding-top: 20px;
+
 
         
       }
@@ -143,7 +142,20 @@
         display: flex;
         flex-direction:column;
         align-items: center;
+        position: relative;
       }
+
+      .dashboard-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px; 
+    background-color: #0b1e5e;
+    border-top-left-radius: 10px; 
+    border-bottom-left-radius: 10px; 
+}
 
 
       .dashboard-row {
@@ -209,13 +221,13 @@
 
 .dark-card,
 .usuarios{
-    background-color: #333;  
-    color: #fff;
+    background-color: #f5f3f3;  
+    color: #201f1f;
     border-radius: 10px;  
     padding: 20px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 300px; 
-    height: 150px; 
+    height: 120px; 
     transition: background-color 0.3s ease-in-out; 
     font-size: 13px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -223,10 +235,10 @@
 
 .ultimos,
 .grafico{
-  background-color: #353434;  
-    color: #fff;
+  background-color: #f5f3f3;  
+    color: #201f1f;
     border-radius: 10px;  
-    padding: 20px; 
+    
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     transition: background-color 0.3s ease-in-out; 
     font-size: 13px;
@@ -240,20 +252,21 @@
     .usuarios:hover,
     .ultimos:hover,
     .grafico:hover {
-        background-color: #555;
+        background-color: #f5f3f3;
     }
 
 .dark-card h2,
     .usuarios h2,
     .ultimos h2,
     .grafico h2 {
-        color: #fff;
+        color: #201f1f;
+        padding-top: 0;
     }
 
     .dark-card p,
     .usuarios p,
     .ultimos .liultimos {
-        color: #fff;
+        color: #201f1f;
         
     }
 
@@ -265,11 +278,15 @@
 
 
 .usuarios h2 {
-    color: #fff;
+    color: #201f1f;
 }
 
 .usuarios p{
-    color: #fff;
+    color: #0b1e5e;
+    font-size: 18px;
+    padding-bottom: 2px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+
 }
 
 .dark-card:hover {
@@ -279,14 +296,14 @@
 
 
 .ultimos h2 {
-    color: #fff;
+    color: #201f1f;
 }
 
 .ultimos .liultimos{
-    color: #fff;
+    
+    border-bottom: 1px solid #0b1e5e;
+    color: #0b1e5e;
     font-size: 16px;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
 }
 
 .dark-card:hover {
@@ -307,7 +324,7 @@
 
 
 .grafico h2{
-    color: #fff;
+    color: #201f1f;
 }
 
 .navbar-horizontal{
@@ -359,7 +376,7 @@
   color: #333;
     margin-bottom: 10px;
     font-size: 1.5em;
-    border-bottom: 3px solid #e4e6ec;
+    border-bottom: 3px solid #0b1e5e;
     display: inline-block;
 }
 
@@ -377,6 +394,12 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
+.dashboard-item i {
+    color: #0b1e5e;
+    font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+}
 
 
 
@@ -468,7 +491,7 @@
          <div class="dashboard-item usuarios">
             <i class="fas fa-database fa-2x"></i>
             <h2 class="title">Total de OT</h2>
-            <p>{{ total_registros_count }}</p>
+            <p><b>{{ total_registros_count }}</b></p>
          </div>
 
          
@@ -477,8 +500,8 @@
             <i class="fas fa-trophy fa-2x"></i>
             <h2 class="title">Usuario con más Registros</h2>
             {% if trabajador_con_mas_registros %}
-                <p>Usuario: {{trabajador_con_mas_registros.user__username }}</p>
-                <p>Número de Registros: {{trabajador_con_mas_registros.registros }}</p>
+                <p><b>{{trabajador_con_mas_registros.user__username }} </b></p>
+                <p>Número de Registros: <b>{{trabajador_con_mas_registros.registros }}</b></p>
             {% else %}
                 <p>No hay trabajadores con registros este mes</p>
             {% endif %}
@@ -488,18 +511,19 @@
          <div class="dashboard-item usuarios">
             <i class="fas fa-long-arrow-alt-down fa-2x"></i>
             <h2 class="title">Usuario con menos Registros</h2>
-                <p>Usuario: {{registros_menos_por_mes.user__username }}</p>
-                <p>Número de Registros: {{registros_menos_por_mes.registros}}</p>
+                <p><b>{{registros_menos_por_mes.user__username }}</b></p>
+                <p>Número de Registros: <b>{{registros_menos_por_mes.registros}}</b></p>
          </div>
          </div>
 
+         
          <div class="dashboard-row">
          <div class="dashboard-item ultimos">
             <i class="fas fa-users fa-2x"></i>
             <h2 class="title">Últimos Usuarios Registrados</h2>
             <ul>
             {% for usuario in usuarios_registrados %}
-            <li class="liultimos"> {{usuario}}</li>
+            <li class="liultimos"> <b>{{usuario}}</b></li>
             {% endfor %}
             </ul>
         </div>
@@ -510,6 +534,7 @@
          </div>
 
         </div>
+      
         </div>
 
 

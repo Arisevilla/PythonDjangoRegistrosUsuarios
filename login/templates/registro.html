@@ -114,13 +114,19 @@
         display:flex;
         flex-direction: column;
         align-items: flex-start;
-        width: 200px;
+        width: 30px;
+        overflow: hidden;
+        transition: width 0.3s ease;
         background-color: #1e1e1e;
         padding:20px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: 5px;
         position:relative;
         
+      }
+
+      .navbar:hover{
+        width: 200px;
       }
 
       .link-login{
@@ -137,9 +143,17 @@
      
       .navbar ul{
         margin:0;
-        padding: 0;
+        padding: 10px;
         list-style: none;
         
+      }
+
+      .navbar ul li span{
+        display: none;
+      }
+
+      .navbar:hover ul li span{
+        display: inline;
       }
 
       .navbar ul li{
@@ -151,6 +165,7 @@
       .navbar i{
         margin-right: 10px;
         color: #fff;
+        font-size:20px;
       }
 
       .navbar ul a{
