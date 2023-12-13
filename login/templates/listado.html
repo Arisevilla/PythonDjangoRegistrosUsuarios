@@ -455,7 +455,7 @@ select option:checked{
 <div class="table-row">
     <tr>
     <td>{{registro.id}}</td>
-    <td>{{registro.user.username}}</td>
+    <td>{{ registro.user.userprofile.nombre }}</td>
     <td class="cliente-color">{{registro.cliente}}</td>
     <td>{{registro.fecha|date:"d/m/Y"}}</td>
     <td>{{registro.rut}}</td>

@@ -174,6 +174,7 @@ def listado(request):
 
     campos_permitidos= ['id', 'name', 'cliente', 'fecha', 'rut','direccion', 'fono','mail','contacto','user.username']
 
+    
     if campo in campos_permitidos and valor:
             if campo == 'fecha':
                 try:
@@ -181,16 +182,24 @@ def listado(request):
                     registros= registros.filter(Q(**{campo:fecha_busqueda}))
                 except ValueError:
                     messages.error(request, 'Formato de fecha no válida')
+            elif campo == 'user__username':
+                print(f"Filtrando por username: {valor}")
+                registros = registros.filter(user__username__icontains=valor)   
+                print(f"Número de registros después de las consultas: {registros.count()}") 
+            elif campo == 'nombre':
+                registros = registros.filter(user__userprofile__nombre__icontains=valor)
             else:
-                if campo == 'user__username':
-                    print(f"Filtrando por username: {valor}")
-                    registros = registros.filter(user__username__icontains=valor)   
-                    print(f"Número de registros después de las consultas: {registros.count()}") 
-                    
-                else:
-                    registros= registros.filter(
-                    Q(**{f'{campo}__icontains':valor})
+                registros = registros.filter(
+                    Q(**{f'{campo}__icontains': valor})
                 )
+
+    else:
+        registros = registros.filter(
+            Q(**{f'{campo}__icontains': valor})
+        )
+
+
+
     print(f"Campo: {campo}, Valor: {valor}, Campo2: {campo2}, Valor2: {valor2}")
     if campo2 in campos_permitidos and valor2:
         if campo2 == 'fecha':
@@ -199,10 +208,15 @@ def listado(request):
                     registros= registros.filter(Q(**{campo2:fecha_busqueda}))
                 except ValueError:
                     messages.error(request, 'Formato de fecha no válida')
+        elif campo2 == 'user__username':
+            registros = registros.filter(user__username__icontains=valor2)
+        elif campo2 == 'nombre':
+            registros = registros.filter(user__userprofile__nombre__icontains=valor2)
         else:
-            registros=registros.filter(
-                Q(**{f'{campo2}__icontains': valor2})
-            )
+            registros = registros.filter(Q(**{f'{campo2}__icontains': valor2}))
+    else:
+            registros = registros.filter(Q(**{f'{campo}__icontains': valor2}))
+
 
     #rango de fechas
     if fecha_inicio and fecha_fin:

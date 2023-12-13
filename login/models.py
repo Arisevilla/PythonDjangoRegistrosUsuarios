@@ -21,7 +21,7 @@ class Formulario(models.Model):
     mail=models.EmailField(null=True, blank=True)
     
 class UserProfile(models.Model):
-    user= models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
     email = models.EmailField()
     nombre= models.CharField(max_length=30,null=True, blank=True)
     apellido=models.CharField(max_length=30,null=True, blank=True)
