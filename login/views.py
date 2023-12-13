@@ -472,3 +472,14 @@ def verificar_rut(request):
 
     return JsonResponse({'usuario_encontrado': bool(usuario_encontrado), 'info_usuario': info_usuario})
 
+def verificar_existencia_usuario(request):
+    rut = request.GET.get('rut', '')
+    email = request.GET.get('email', '')
+    username = request.GET.get('username', '')
+
+    usuario_existente = User.objects.filter(username=username).exists()
+    rut_existente = Formulario.objects.filter(rut=rut).exists()
+    correo_existente = User.objects.filter(email=email).exists()
+
+    return JsonResponse({'usuario_existente': usuario_existente, 'rut_existente': rut_existente, 'correo_existente': correo_existente})
+

@@ -288,6 +288,7 @@
         <div class="dashboard-row">
           <div class="registro-group">
             Rut<input type="text" name="rut" id="rutInput" required> 
+            <span id="rutExistenteMensaje" class="error-message"></span>
             
             <span id="rutErrorMessage" class="error-message">{{rut_error}}</span>
            
@@ -318,8 +319,9 @@
       </div>
 
       <div class="dashboard-row">
-        <div class="registro-group">
-        Usuario: <input type="text" name="username" > <br>
+        <div class="registro-group" >
+        Usuario: <input type="text" name="username" >
+        <span id="usuarioExistenteMensaje" class="error-message"></span> <br>
         </div>
 
         
@@ -405,6 +407,65 @@ if (expectedDigitChar === rut.slice(-1)) {
         return false;
     }
       }
+  });
+
+
+
+
+
+// funcion para renderizar que el rut usuario o email ya existen
+  $(document).ready(function () {
+      // Función para verificar la existencia en tiempo real
+      function verificarExistencia() {
+          var rut = $('#rutInput').val();
+          var email = $('[name="email"]').val();
+          var username = $('[name="username"]').val();
+
+          $.ajax({
+              url: '/verificar_existencia_usuario/',
+              data: {
+                  'rut': rut,
+                  'email': email,
+                  'username': username
+              },
+              dataType: 'json',
+              success: function (data) {
+
+
+                if (data.usuario_existente) {
+                    $('#usuarioExistenteMensaje').text('El usuario ya existe.');
+                } else {
+                    $('#usuarioExistenteMensaje').text('');
+                }
+
+                if (data.rut_existente) {
+                    $('#rutExistenteMensaje').text('El RUT ya está registrado.');
+                } else {
+                    $('#rutExistenteMensaje').text('');
+                }
+
+                if (data.correo_existente) {
+                    $('#correoExistenteMensaje').text('El correo ya está registrado.');
+                } else {
+                    $('#correoExistenteMensaje').text('');
+                }
+            }
+            
+          });
+      }
+
+      // Manejar la verificación en tiempo real en el evento 'input'
+      $('#rutInput').on('input', function () {
+        verificarExistencia();
+    });
+
+    $('[name="username"]').on('change', function () {
+        verificarExistencia();
+    });
+
+    $('[name="email"]').on('input', function () {
+        verificarExistencia();
+    });
   });
 </script>
    
