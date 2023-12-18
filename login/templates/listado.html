@@ -124,12 +124,17 @@
         margin-top: 20px;
         overflow-x:auto;
         width: 100%;
+        
+      }
+
+      .table.table.table-light{
+        margin-left: 100px;
       }
 
       .table{
        display:flex;
        flex-direction:column;
-       width: 90%;
+       width: 100%;
        border-collapse:collapse;
        margin-top: 10px; 
        margin: 20px auto;
@@ -151,6 +156,10 @@
         font-size: 14px;
       }
 
+      .table tr:not(.table-dark) td {
+  padding: 10px 30px; 
+}
+
       .table th a{
         text-decoration: none;
         color:#fff;
@@ -163,11 +172,14 @@
       .table th {
         background-color: #f8f9fa;
         color: #555;
-        position: sticky;
         top: 0;
         z-index: 2;
   
       }
+
+      .actions button {
+  margin-right: 5px;
+}
 
 
 
@@ -371,7 +383,27 @@ select option:checked{
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    border-radius: 5px;
 }
+
+.form-container{
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-container p{
+  margin:10px 0;
+}
+
+.form-container label{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+
+
+
 
 .close {
     color: #aaa;
@@ -386,6 +418,8 @@ select option:checked{
     text-decoration: none;
     cursor: pointer;
 }
+
+
 
 
 
@@ -473,8 +507,8 @@ select option:checked{
 
 
 
-<table class="table table-light w-75 mx-auto text-center ">
-    <tr class="table-dark w-75">
+<table class="table table-light ">
+    <tr class="table-dark ">
         <th>OT<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Cliente<a href="{{ url_ordenacion_asc }}"> </a></th>
         <th>Fecha<a href="{{ url_ordenacion_asc }}"> </a></th>
@@ -496,6 +530,7 @@ select option:checked{
     
     
     <td class="actions">
+      <button class="btn btn-primary" <button class="btn btn-primary" data-registro-id="{{ registro.id }}" onclick="mostrarDetalles(this)">Detalles</button>
 
     <form action="{% url 'detalle' registro.id %}" method="post">
         {% csrf_token %}
@@ -515,10 +550,11 @@ select option:checked{
     {% endfor %}
 
     <div id="detalleModal" class="modal">
-      <div class="modal-content">
-          <span class="close" onclick="cerrarModal()">&times;</span>
-          <div id="detallesContainer"></div>
-      </div>
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <div id="detallesContainer" class="form-container"></div>
+  </div>
+</div>
   
 </table>
 
@@ -570,6 +606,30 @@ select option:checked{
 
 
 
+
+  function mostrarDetalles(boton) {
+  // Obtiene el valor del atributo data-registro-id del botón
+  const registroId = boton.dataset.registroId;
+
+  const detallesContainer = document.getElementById('detallesContainer');
+  detallesContainer.innerHTML = ''; // Limpia el contenido anterior
+
+  // Realiza una solicitud AJAX para obtener los detalles del registro
+  fetch(`/detalles_registro/${registroId}/`)
+        .then(response => response.text())
+        .then(data => {
+            detallesContainer.innerHTML = data;
+            const modal = document.getElementById('detalleModal');
+            modal.style.display = 'block';
+        })
+        .catch(error => console.error('Error al obtener detalles del registro:', error));
+}
+
+
+function cerrarModal() {
+  const modal = document.getElementById('detalleModal');
+  modal.style.display = 'none';
+}
   
 </script>
 </body>

@@ -486,3 +486,23 @@ def verificar_existencia_usuario(request):
     return JsonResponse({'usuario_existente': usuario_existente, 'rut_existente': rut_existente, 'correo_existente': correo_existente})
 
 
+
+
+def detalles_registro(request, registro_id):
+    try:
+        registro = Formulario.objects.get(id=registro_id)
+        detalles = {
+            'id': registro.id,
+            'cliente': registro.cliente,
+            'fecha': str(registro.fecha),
+            'rut': registro.rut,
+            'direccion': registro.direccion,
+            'contacto': registro.contacto,
+            'fono': registro.fono,
+            'descripcion': registro.descripcion,
+            'mail': registro.mail,
+        }
+
+        return render(request, 'detalle2.html', {'detalle': detalles})
+    except Formulario.DoesNotExist:
+        return JsonResponse({'error': 'Registro no encontrado'}, status=404)

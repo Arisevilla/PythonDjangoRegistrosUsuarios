@@ -4,8 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style type="text/css">
+        .detalle-registro {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.detalle-titulo {
+    color: #007bff;
+}
+
+.detalle-item {
+    margin-bottom: 10px;
+}
+
+
+    </style>
 </head>
 <body>
-    Hola
+    <div class="detalle-registro">
+        <h2 class="detalle-titulo">Detalles del Registro</h2>
+        <p class="detalle-item">OT: {{ detalle.id }}</p>
+        <p class="detalle-item">Cliente: {{ detalle.cliente }}</p>
+        <p class="detalle-item">Fecha: {{ detalle.fecha }}</p>
+        <p class="detalle-item">Rut Cliente: {{ detalle.rut }}</p>
+        <p class="detalle-item">Dirección cliente: {{ detalle.direccion }}</p>
+        <p class="detalle-item">Contacto: {{ detalle.contacto }}</p>
+        <p class="detalle-item">Fono: {{ detalle.fono }}</p>
+        <p class="detalle-item">Mail: {{ detalle.mail }}</p>
+        <p class="detalle-item">Descripción: {{ detalle.descripcion }}</p>
+
+    </div>
 </body>
 </html>

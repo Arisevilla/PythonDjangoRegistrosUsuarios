@@ -20,6 +20,7 @@ from login import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.iniciar, name='iniciar'),
@@ -34,6 +35,9 @@ urlpatterns = [
     path('inicio/',views.inicio,name='inicio'),
     path('verificar_rut/', views.verificar_rut, name='verificar_rut'),
     path('verificar_existencia_usuario/', views.verificar_existencia_usuario, name='verificar_existencia_usuario'),
+    path('detalles_registro/<int:registro_id>/', views.detalles_registro, name='detalles_registro'),
+   
+
 
     
 ]
